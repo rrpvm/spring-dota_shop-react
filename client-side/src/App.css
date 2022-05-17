@@ -1,0 +1,19 @@
+.filter-block{
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    padding: 0px 10px;
+}
+.items-block{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 0px 10px;
+}
+.item-block-column{
+    display: flex;
+    flex-direction: column;
+    width: 33%;
+    background: rgb(29, 209, 212);
+    padding: .2em .4em;
+}
