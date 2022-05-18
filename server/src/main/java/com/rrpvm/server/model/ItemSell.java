@@ -13,6 +13,7 @@ public class ItemSell {
     @Column(name = "item_name")
     private String itemName;
     @Column(name = "item_image")
+    @Lob
     private String itemImage;
     @Column(name = "item_hame")
     private String itemHero;

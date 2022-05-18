@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class AdminViewController {
     @Autowired
     private ItemSellRepository itemRepository;
-    @PostMapping("/update")
-    public ResponseEntity<Nullable> getItemsLength(@RequestBody  @NotNull ItemSell item) {
-        System.out.println(item.getItemImage());
-        return ResponseEntity.ok(null);
+
+    @PostMapping("/item")
+    public ResponseEntity<String> createItem(@RequestBody @NotNull ItemSell item) {
+        ItemSell result = itemRepository.save(item);
+        ItemSell second = itemRepository.findById(result.getItemId()).get();
+        return result == null ? ResponseEntity.badRequest().body(null) : ResponseEntity.ok(second.getItemImage());
     }
 }
