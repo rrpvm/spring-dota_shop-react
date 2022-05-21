@@ -1,6 +1,7 @@
 package com.rrpvm.server.model;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 

@@ -5,7 +5,6 @@ import com.rrpvm.server.model.ItemSell;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,8 +16,15 @@ public class AdminViewController {
 
     @PostMapping("/item")
     public ResponseEntity<String> createItem(@RequestBody @NotNull ItemSell item) {
-        ItemSell result = itemRepository.save(item);
-        ItemSell second = itemRepository.findById(result.getItemId()).get();
-        return result == null ? ResponseEntity.badRequest().body(null) : ResponseEntity.ok(second.getItemImage());
+        ItemSell existedItem = itemRepository.findByItemName(item.getItemName());
+        if(existedItem == null){
+            ItemSell result = itemRepository.save(item);
+            if(result != null)
+            return ResponseEntity.ok(result.getItemImage());
+        }
+        else{
+            return ResponseEntity.badRequest().body(null);
+        }
+        return ResponseEntity.ok(null);
     }
 }

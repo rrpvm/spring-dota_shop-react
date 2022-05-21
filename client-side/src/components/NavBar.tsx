@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/Nav'
 export const NavigationBar = () : JSX.Element => (
     <Navbar bg="light" expand="lg">
     <Container>
-      <Navbar.Brand href="#home">Spring-React-TS-shop</Navbar.Brand>
+      <Navbar.Brand href="/">Spring-React-TS-shop</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="me-auto">
