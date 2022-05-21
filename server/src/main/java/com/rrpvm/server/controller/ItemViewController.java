@@ -29,8 +29,13 @@ public class ItemViewController {
     }
 
     @GetMapping("/items_length")
-    public ResponseEntity<Long> sendItemsLength() {
-        return ResponseEntity.ok(itemRepository.count());
+    public ResponseEntity<Integer> sendItemsLength(@RequestParam(required = false) String[] rarity) {
+        if (rarity == null) return ResponseEntity.noContent().build();
+        List<ItemSell> items = itemRepository.findAllByItemRarities(new ArrayList<>(Arrays.asList(rarity)));
+        for (ItemSell itemSell : items) {
+            System.out.println(itemSell);
+        }
+        return ResponseEntity.ok(items.size());
     }
 
     @GetMapping("/items_rarity")

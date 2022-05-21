@@ -2,16 +2,14 @@ import ItemRarityDTO from "./ItemRarityDTO";
 
 export default class CheckBoxListPropAdapter {
     id: number;
-    value: boolean;
     name: string;
     hexColor: string;
-    constructor(id: number, value: boolean, name: string, hexColor: string) {
-        this.id = id;
-        this.value = value;
+    constructor(id: number, name: string, hexColor: string) {
+        this.id = id;  
         this.name = name;
         this.hexColor = hexColor;
     }
     static build = (itemRarity: ItemRarityDTO) => {
-        return new CheckBoxListPropAdapter(itemRarity.id, false, itemRarity.rarity, itemRarity.hexColor);
+        return new CheckBoxListPropAdapter(itemRarity.id, itemRarity.rarity, itemRarity.hexColor);
     };
 };
