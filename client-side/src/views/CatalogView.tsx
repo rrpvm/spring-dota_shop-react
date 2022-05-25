@@ -10,30 +10,6 @@ import CheckBoxListPropAdapter from "../model/CheckBoxListPropAdapter";
 import ItemRarityDTO from "../model/ItemRarityDTO";
 
 
-const getData = (setItemLengthCallback: CallableFunction, setItemsRarityCallback: CallableFunction, searchParams: URLSearchParams) => {
-    axios.get(`http://localhost:8080/items_length?${searchParams}`).then((response: AxiosResponse) => {//get filtered length
-        setItemLengthCallback(response.data);
-    }).catch((error: AxiosError) => {
-        console.log(error.message);
-    });
-
-    axios.get("http://localhost:8080/items_rarity").then((response: AxiosResponse) => {
-        const dataProxy: ItemRarityDTO[] = response.data;
-        setItemsRarityCallback(dataProxy.map(item => CheckBoxListPropAdapter.build(item)));
-    }).catch((error: AxiosError) => {
-        console.log(error.message);
-    });
-}
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -41,16 +17,28 @@ export const CatalogView = (): JSX.Element => {
     const [itemsLength, setItemLength] = useState(0);
     const [itemsRarity, setItemsRarity] = useState<CheckBoxListProp[]>([]);
     const [searchParams, setSearchParams] = useSearchParams();
+    const getData = (setItemLengthCallback: CallableFunction, setItemsRarityCallback: CallableFunction, searchParams: URLSearchParams) => {
+        axios.get(`http://localhost:8080/items_length?${searchParams}`).then((response: AxiosResponse) => {//get filtered length
+            setItemLengthCallback(response.data);
+        }).catch((error: AxiosError) => {
+            console.log(error.message);
+        });
 
+        axios.get("http://localhost:8080/items_rarity").then((response: AxiosResponse) => {
+            const dataProxy: ItemRarityDTO[] = response.data;
+            setItemsRarityCallback(dataProxy.map(item => CheckBoxListPropAdapter.build(item)));
+        }).catch((error: AxiosError) => {
+            console.log(error.message);
+        });
+    }
     useEffect(() => {
         setSearchParams({});//calls use effect with [searchParams] where calls GetData();
     }, []);
 
     useEffect(() => {
         getData(setItemLength, setItemsRarity, searchParams);
-        console.log(itemsRarity);
     }, [searchParams]);
-    
+
     const insertRarityCheckBoxList = () => {
         if (itemsRarity.length === 0) {
             return <></>;

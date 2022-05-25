@@ -22,8 +22,9 @@ public class ItemViewController {
     private static final int ITEMS_IN_COLUMN = 3;
 
     @GetMapping("/get_items/{dataPosition}")
-    public ResponseEntity<List<ItemSell>> getItems(@RequestParam(required = false) String params, @PathVariable(required = true) int dataPosition) {
-        final List<ItemSell> items = itemRepository.findAll();
+    public ResponseEntity<List<ItemSell>> getItems(@RequestParam(required = false) String[] rarity, @PathVariable(required = true) int dataPosition) {
+        if (rarity == null) return ResponseEntity.noContent().build();
+        List<ItemSell> items = itemRepository.findAllByItemRarities(new ArrayList<>(Arrays.asList(rarity)));
         int avaliableItems = Math.abs(items.size() - dataPosition);
         return ResponseEntity.ok(items.subList(dataPosition, dataPosition + Math.min(ITEMS_IN_COLUMN, avaliableItems)));
     }
@@ -32,9 +33,6 @@ public class ItemViewController {
     public ResponseEntity<Integer> sendItemsLength(@RequestParam(required = false) String[] rarity) {
         if (rarity == null) return ResponseEntity.noContent().build();
         List<ItemSell> items = itemRepository.findAllByItemRarities(new ArrayList<>(Arrays.asList(rarity)));
-        for (ItemSell itemSell : items) {
-            System.out.println(itemSell);
-        }
         return ResponseEntity.ok(items.size());
     }
 

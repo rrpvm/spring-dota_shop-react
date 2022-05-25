@@ -72,6 +72,7 @@
   padding: 15px 0px;
 }
 .item-create-block {
+  margin-top: 1em;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -108,11 +109,11 @@
 /*
 <CHECKBOX LIST  CSS>
 */
-.checkbox-list-title{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
+.checkbox-list-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 .checkbox-list-container {
   display: flex;
@@ -133,8 +134,17 @@
   padding: 5px 0px;
 }
 .checkbox-list-body-item-value {
-margin: 0em 0.2em;
+  margin: 0em 0.2em;
 }
 /*
 </CHECKBOX LIST  CSS>
 */
+
+/*ALERT*/
+.alert-message {
+  position: absolute !important;
+  width: 30%;
+  left: 70%;
+  top: 5%;
+  height: 50px;
+}
