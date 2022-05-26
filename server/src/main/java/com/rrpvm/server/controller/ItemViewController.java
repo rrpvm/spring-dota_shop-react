@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,7 +38,7 @@ public class ItemViewController {
     }
 
     @GetMapping("/items_rarity")
-    public ResponseEntity<List<ItemRarityResponse>> sendItemsRarity() {
-        return ResponseEntity.ok(Arrays.stream(ItemRarity.values()).map((item) -> new ItemRarityResponse(item)).collect(Collectors.toList()));
+    public ResponseEntity<Set<ItemRarityResponse>> sendItemsRarity() {
+        return ResponseEntity.ok(Arrays.stream(ItemRarity.values()).map((item) -> new ItemRarityResponse(item)).collect(Collectors.toSet()));
     }
 }

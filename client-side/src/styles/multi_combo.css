@@ -3,6 +3,7 @@
     display: flex;
     width: 100%;
     flex-direction: column;
+    position: relative;
   }
   .multi-combo-chosen {
     display: flex;
@@ -11,6 +12,7 @@
     flex-wrap: wrap;
     align-items: center;
     color: black;
+    position: relative;
   }
   .multi-combo-chosen-element {
     display: inline-flex;
@@ -40,14 +42,81 @@
     font-size: 1.5rem;
   }
   .multi-combo-search {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    padding: 0;
+    margin: 10px 0px 0px 0px !important;
+  }
+  .multi-combo-search input {
+    flex: 1;
     width: 100%;
     min-height: 35px;
-    margin: 10px 0 !important;
+    padding-left: 5px;
     background: none;
     outline: none;
     caret-color: rgb(218, 218, 218);
     border-radius: 3px;
-    border: 1px solid rgb(218, 218, 218);
+    border: 0.5px solid #ffdd45;
     color: rgb(218, 218, 218);
+  }
+  .multi-combo-close {
+    position: relative;
+    display: flex;
+    width: 35px !important;
+    min-height: 35px;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    background-color: #ffdd45;
+    background-image: url("https://www.shareicon.net/data/512x512/2015/09/12/99851_down_512x512.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    right: 0;
+    transition: all 0.25s ease-in-out;
+    cursor: pointer;
+  }
+  .close-reversed {
+    transform: rotateX(180deg);
+  }
+  .multi-combo-variants {
+    position: absolute;
+    top: 98%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 0px; /*чтоб не мешало остальным блокам*/
+    overflow: hidden;
+    opacity: 0;
+    background: rgb(9, 9, 9);
+    transition: all 0.25s ease-in-out;
+  }
+  .multi-combo-active {
+    overflow: visible;
+    opacity: 1;
+  }
+  .multi-combo-item-variant {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    color: rgb(218, 218, 218);
+    cursor: pointer;
+    background: #232323;
+    transition: all 0.25s ease-in-out;
+    padding: 5px 10px;
+  }
+  .multi-combo-item-variant:hover {
+    background: #ffdd45;
+    color: #232323;
+  }
+  .multi-combo-variants-wrapper {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ffdd45;
+  }
+  .multi-variant-disabled {
+    display: none;
   }
 }
