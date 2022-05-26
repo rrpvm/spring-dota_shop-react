@@ -18,12 +18,8 @@ const getData = (setItemLengthCallback: CallableFunction, searchParams: URLSearc
 export const CatalogView = (): JSX.Element => {
     const [rarityOnSelection, setSelectedRarities] = useState<string[]>([]);
     const [rarityList, setRarityList] = useState<RarityDataDTO[]>([]);
-
-
-
-
+    /*MULTIBOX END */
     const [itemsLength, setItemLength] = useState(0);
-
     const [searchParams, setSearchParams] = useSearchParams();
     const [isSearchFocused, setSearchFocused] = useState(false);
     const onSearchFocused = () => setSearchFocused(true);
@@ -38,11 +34,9 @@ export const CatalogView = (): JSX.Element => {
     useEffect(() => {
         getData(setItemLength, searchParams);
     }, [searchParams]);
-    const onRarirityItemSelect = (itemName: string): void => {//мультибокс гарантирует уникальность выбора
-        let mutableRarityList: string[] = [...rarityOnSelection, itemName];
-        setSelectedRarities(mutableRarityList);
+    const onRarityItemChange = (newRarities: string[]) => {
+        setSelectedRarities(newRarities);
     }
-
     return (
         <div className="catalog-wrapper">
             <div className="container">
@@ -52,7 +46,7 @@ export const CatalogView = (): JSX.Element => {
                     <MultiComboBox
                         selectedItems={rarityOnSelection}
                         allVariants={rarityList?.map(item => item.rarity)}
-                        selectItemCallback={onRarirityItemSelect}
+                        dataBindCallback={onRarityItemChange}
                     ></MultiComboBox>
                     <div></div>
                 </div>

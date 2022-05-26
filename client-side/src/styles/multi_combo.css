@@ -62,7 +62,7 @@
     border: 0.5px solid #ffdd45;
     color: rgb(218, 218, 218);
   }
-  .multi-combo-close {
+  .multi-combo-switch {
     position: relative;
     display: flex;
     width: 35px !important;
@@ -78,7 +78,7 @@
     transition: all 0.25s ease-in-out;
     cursor: pointer;
   }
-  .close-reversed {
+  .switch-reversed {
     transform: rotateX(180deg);
   }
   .multi-combo-variants {
