@@ -1,36 +1,38 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useEffect } from "react";
-import Container from "react-bootstrap/esm/Container";
 import { useSearchParams } from "react-router-dom";
 import CheckBoxList from "../components/CheckBoxList";
 import { ItemColumnGroup } from "../components/ItemColumnGroup";
+import { MultiComboBox } from "../components/MultiComboBox";
 import CheckBoxListProp from "../model/CheckBoxListProp";
 import CheckBoxListPropAdapter from "../model/CheckBoxListPropAdapter";
 import ItemRarityDTO from "../model/ItemRarityDTO";
+import '../styles/catalog.css'
 
+const getData = (setItemLengthCallback: CallableFunction, setItemsRarityCallback: CallableFunction, searchParams: URLSearchParams) => {
+    axios.get(`http://localhost:8080/items_length?${searchParams}`).then((response: AxiosResponse) => {//get filtered length
+        setItemLengthCallback(response.data);
+    }).catch((error: AxiosError) => {
+        console.log(error.message);
+    });
 
-
+    axios.get("http://localhost:8080/items_rarity").then((response: AxiosResponse) => {
+        const dataProxy: ItemRarityDTO[] = response.data;
+        setItemsRarityCallback(dataProxy.map(item => CheckBoxListPropAdapter.build(item)));
+    }).catch((error: AxiosError) => {
+        console.log(error.message);
+    });
+}
 
 
 export const CatalogView = (): JSX.Element => {
     const [itemsLength, setItemLength] = useState(0);
     const [itemsRarity, setItemsRarity] = useState<CheckBoxListProp[]>([]);
     const [searchParams, setSearchParams] = useSearchParams();
-    const getData = (setItemLengthCallback: CallableFunction, setItemsRarityCallback: CallableFunction, searchParams: URLSearchParams) => {
-        axios.get(`http://localhost:8080/items_length?${searchParams}`).then((response: AxiosResponse) => {//get filtered length
-            setItemLengthCallback(response.data);
-        }).catch((error: AxiosError) => {
-            console.log(error.message);
-        });
-
-        axios.get("http://localhost:8080/items_rarity").then((response: AxiosResponse) => {
-            const dataProxy: ItemRarityDTO[] = response.data;
-            setItemsRarityCallback(dataProxy.map(item => CheckBoxListPropAdapter.build(item)));
-        }).catch((error: AxiosError) => {
-            console.log(error.message);
-        });
-    }
+    const [isSearchFocused, setSearchFocused] = useState(false);
+    const onSearchFocused = () => setSearchFocused(true);
+    const onSearchBlured = () => setSearchFocused(false);
     useEffect(() => {
         setSearchParams({});//calls use effect with [searchParams] where calls GetData();
     }, []);
@@ -69,19 +71,34 @@ export const CatalogView = (): JSX.Element => {
         setSearchParams(_newSearchParams);
     }
     return (
-        <Container style={{ display: "flex", flexDirection: "row" }}>
-            <div className="filter-block">
-                <div className="filter-property">
-                    {insertRarityCheckBoxList()}
+        <div className="catalog-wrapper">
+            <div className="container">
+                <div className="catalog-left">
+                    <div className={(isSearchFocused ? "active-search " : "") + "catalog-left-search"}><input type="text" placeholder="поиск по названию" onFocus={onSearchFocused} onBlur={onSearchBlured}></input></div>
+                    <h2 style={{color:"white"}}>Rarity</h2>
+                    <MultiComboBox></MultiComboBox>
+                    <div></div>
                 </div>
-                <div className="filter-property">item hero</div>
+                <div className="catalog-right">
+                    <div className="catalog-sort">
+
+                    </div>
+                    <div className="catalog-items">
+                        <div>a</div>
+                        <div>b</div>
+                    </div>
+                </div>
             </div>
-            <div className="items-block">
-                {
-                    insertItemColumnGroup()
-                }
+            <div className="catalog-footer">
+                <div className="catalog-footer-body container">
+                    <h2>Created by @rrpvm</h2>
+                    <h3>26.05.2022</h3>
+                    <h3>26.05.2022</h3>
+                    <h3>26.05.2022</h3>
+                    <h3>26.05.2022</h3>
+                </div>
             </div>
-        </Container>
+        </div >
     )
 };
 

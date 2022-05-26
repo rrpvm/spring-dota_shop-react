@@ -1,0 +1,53 @@
+@media (min-width: 640px) {
+  .multi-combo-box {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+  .multi-combo-chosen {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    color: black;
+  }
+  .multi-combo-chosen-element {
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    padding: 3px;
+    margin: 6px 3px !important;
+    background: #ffdd45;
+    border-radius: 3px;
+    cursor: pointer;
+    word-break: break-all;
+  }
+  .multi-combo-chosen-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 3px;
+  }
+  .multi-combo-delete-button {
+    margin-left: auto !important;
+    margin-right: 3px !important;
+    display: flex;
+    width: auto;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+  .multi-combo-search {
+    width: 100%;
+    min-height: 35px;
+    margin: 10px 0 !important;
+    background: none;
+    outline: none;
+    caret-color: rgb(218, 218, 218);
+    border-radius: 3px;
+    border: 1px solid rgb(218, 218, 218);
+    color: rgb(218, 218, 218);
+  }
+}
