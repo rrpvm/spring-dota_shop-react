@@ -1,16 +1,10 @@
 package com.rrpvm.server;
 
-import com.rrpvm.server.dao.ItemSellRepository;
-import com.rrpvm.server.model.ItemRarity;
-import com.rrpvm.server.model.ItemSell;
+import com.rrpvm.server.dao.repository.ItemSellRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 
 @SpringBootApplication
 public class ServerApplication implements CommandLineRunner {

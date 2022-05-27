@@ -90,6 +90,7 @@
     outline: none;
   }
   .catalog-right {
+    margin-left: 100px !important;
     flex: 5;
     display: flex;
     flex-direction: column;

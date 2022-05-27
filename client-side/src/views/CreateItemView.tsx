@@ -18,7 +18,7 @@ export const CreateItemView: React.FC = () => {
 
     }
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+   /* const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const item: ItemDTO = new ItemDTO(itemName, itemImage, itemHero, itemRarity, parseFloat(itemPrice), itemAvaliable);
         axios.post("http://localhost:8080/admin/item", item).then((response: AxiosResponse) => {
@@ -26,7 +26,7 @@ export const CreateItemView: React.FC = () => {
         }).catch((error: AxiosError) => {
             console.log(error.message);
         });
-    };
+    };*/
     const handlePriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
             const txt: string = e.currentTarget.value;
@@ -50,7 +50,7 @@ export const CreateItemView: React.FC = () => {
             {serverMessage.length > 0 && <Alert>{serverMessage}</Alert>}
             < div className="item-create-block" >
 
-                <form className="item-create-form" onSubmit={handleSubmit}>
+                <form className="item-create-form" onSubmit={/*handleSubmit*/()=>{}}>
                     <Form.Label>выберите изображение предмета</Form.Label>
                     <input className="form-control" type="file" onChange={
                         (e: React.FormEvent<HTMLInputElement>) => {

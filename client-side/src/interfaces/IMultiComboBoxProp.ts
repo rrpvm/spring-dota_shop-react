@@ -1,5 +1,6 @@
+import IMultiComboBoxItem from "../model/IMultiComboBoxItem";
 export interface IMultiComboBoxProp {
-    selectedItems: string[];
-    allVariants: string[];
-    dataBindCallback: (newSelectItems: string[]) => void;
+    selectedItems: IMultiComboBoxItem[];
+    allVariants: IMultiComboBoxItem[];
+    dataBindCallback: (newSelectItems: IMultiComboBoxItem[]) => void;
 }

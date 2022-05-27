@@ -1,6 +1,6 @@
 package com.rrpvm.server.controller;
 
-import com.rrpvm.server.dao.ItemSellRepository;
+import com.rrpvm.server.dao.repository.ItemSellRepository;
 import com.rrpvm.server.model.ItemSell;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;

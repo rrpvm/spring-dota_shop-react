@@ -1,42 +1,29 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { MultiComboBox } from "../components/MultiComboBox";
-import RarityDataDTO from "../model/RarityInfoDTO";
 import '../styles/catalog.css'
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { apiRequests } from '../network/ApiRequests';
+import { MultiComboBox } from "../components/MultiComboBox";
+import RarityInfoDTO from "../model/RarityInfoDTO";
+import IMultiComboBoxItem from '../model/IMultiComboBoxItem';
 
-const getData = (setItemLengthCallback: CallableFunction, searchParams: URLSearchParams) => {
-    axios.get(`http://localhost:8080/items_length?${searchParams}`).then((response: AxiosResponse) => {//get filtered length
-        setItemLengthCallback(response.data);
-    }).catch((error: AxiosError) => {
-        console.log(error.message);
-    });
-}
+
 
 
 export const CatalogView = (): JSX.Element => {
-    const [rarityOnSelection, setSelectedRarities] = useState<string[]>([]);
-    const [rarityList, setRarityList] = useState<RarityDataDTO[]>([]);
-    /*MULTIBOX END */
-    const [itemsLength, setItemLength] = useState(0);
     const [searchParams, setSearchParams] = useSearchParams();
+    /*<MULTOBOX RARITY DATA>*/
+    const [rarityOnSelection, setSelectedRarities] = useState<IMultiComboBoxItem[]>([]);//selected
+    const [rarityList, setRarityList] = useState<RarityInfoDTO[]>([]);//alllist
+    /*</MULTIBOX RARITY DATA>*/
+    /*<html component's states>*/
     const [isSearchFocused, setSearchFocused] = useState(false);
+    /*</html component's states>*/
+    const [itemsLength, setItemLength] = useState(0);
+    useEffect(() => { apiRequests.getProductsLength(searchParams, setItemLength) }, [searchParams]);//or [rarirityOnSelection]
+    useEffect(() => { setSearchParams({}); apiRequests.getRarityList(setRarityList); }, []);
     const onSearchFocused = () => setSearchFocused(true);
     const onSearchBlured = () => setSearchFocused(false);
-    useEffect(() => {
-        setSearchParams({});//calls use effect with [searchParams] where calls GetData();
-        axios.get("http://localhost:8080/items_rarity").then((response: AxiosResponse) => {
-            setRarityList(response.data);
-        });
-    }, []);
-
-    useEffect(() => {
-        getData(setItemLength, searchParams);
-    }, [searchParams]);
-    const onRarityItemChange = (newRarities: string[]) => {
-        setSelectedRarities(newRarities);
-    }
+    const onRarityItemChange = (newRarities: IMultiComboBoxItem[]) => { setSelectedRarities(newRarities); }
     return (
         <div className="catalog-wrapper">
             <div className="container">
@@ -45,7 +32,7 @@ export const CatalogView = (): JSX.Element => {
                     <h2 style={{ color: "white" }}>Rarity</h2>
                     <MultiComboBox
                         selectedItems={rarityOnSelection}
-                        allVariants={rarityList?.map(item => item.rarity)}
+                        allVariants={rarityList?.map(item => new IMultiComboBoxItem(item.id, item.rarity))}
                         dataBindCallback={onRarityItemChange}
                     ></MultiComboBox>
                     <div></div>
@@ -72,33 +59,3 @@ export const CatalogView = (): JSX.Element => {
         </div >
     )
 };
-
-/*const insertRarityCheckBoxList = () => {
-        if (itemsRarity.length === 0) {
-            return <></>;
-        }
-        return <CheckBoxList items={itemsRarity} title={"Rarity"} onCheckboxStateChanged={handleRarityPicked}></CheckBoxList>
-    }
-    const insertItemColumnGroup = () => {
-        let array: number[] = [];
-        for (let i: number = 0; i < itemsLength; i += 3) {
-            array.push(i);
-        }
-        return array.map((item) => {
-            return (<ItemColumnGroup data_count={item} key={item}></ItemColumnGroup>);
-        });
-    }*/
-/*const handleRarityPicked = (bChecked: boolean, item: CheckBoxListPropAdapter): void => {
-    const oldValues: string[] = searchParams.getAll("rarity");
-    let _newSearchParams = searchParams;
-    if (bChecked) {
-        _newSearchParams.append("rarity", item.name);
-    }
-    else {
-        _newSearchParams.delete("rarity");//clear
-        oldValues.forEach((str: string) => {
-            if (str !== item.name) _newSearchParams.append("rarity", str);
-        });
-    }
-    setSearchParams(_newSearchParams);
-}*/

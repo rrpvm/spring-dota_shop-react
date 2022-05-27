@@ -1,11 +1,13 @@
+import RarityInfoDTO from "./RarityInfoDTO";
+
 export default class ItemDTO {
     private _itemName: string;
     private _itemImage: string;
     private _itemHero: string;
-    private _itemRarity: string;
+    private _itemRarity: RarityInfoDTO;
     private _itemPrice: number;
     private _itemsAvaliable: number;
-    constructor(itemName: string, itemImage: string, itemHero: string, itemRarity: string, itemPrice: number, itemsAvaliable: number) {
+    constructor(itemName: string, itemImage: string, itemHero: string, itemRarity: RarityInfoDTO, itemPrice: number, itemsAvaliable: number) {
         this._itemHero = itemHero;
         this._itemName = itemName;
         this._itemImage = itemImage;
@@ -22,7 +24,7 @@ export default class ItemDTO {
     public get itemHero(): string {
         return this._itemHero;
     }
-    public get itemRarity(): string {
+    public get itemRarity(): RarityInfoDTO {
         return this._itemRarity;
     }
     public get itemPrice(): number {
