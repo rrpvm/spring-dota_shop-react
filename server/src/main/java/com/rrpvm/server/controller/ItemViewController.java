@@ -23,21 +23,18 @@ import com.rrpvm.server.model.ItemSell;
 public class ItemViewController {
     @Autowired
     private ItemSellRepository itemRepository;
-    private static final int ITEMS_IN_COLUMN = 3;
 
-    @GetMapping("/items/{dataPosition}")
-    public ResponseEntity<List<ItemSell>> getItems(@RequestParam(required = false) String[] rarity, @PathVariable(required = true) int dataPosition) {
+    @GetMapping("/items")
+    public ResponseEntity<List<ItemSell>> getItems(@RequestParam(required = false) String[] rarity, @RequestParam(required = false, name = "name") String nameContains) {
         if (rarity == null) return ResponseEntity.noContent().build();
-        List<ItemSell> items = itemRepository.findAllByItemRarities(new ArrayList<>(Arrays.asList(rarity)));
-        int avaliableItems = Math.abs(items.size() - dataPosition);
-        return ResponseEntity.ok(items.subList(dataPosition, dataPosition + Math.min(ITEMS_IN_COLUMN, avaliableItems)));
-    }
-
-    @GetMapping("/items/length")
-    public ResponseEntity<Integer> sendItemsLength(@RequestParam(required = false) String[] rarity) {
-        if (rarity == null) return ResponseEntity.noContent().build();
-        List<ItemSell> items = itemRepository.findAllByItemRarities(new LinkedList<>(Arrays.asList(rarity)));
-        return ResponseEntity.ok(items.size());
+        final String nameContainingFilter = nameContains == null ? "" : nameContains;
+        List<ItemSell> items = itemRepository.findAllByItemRarities(
+                        new ArrayList<>(Arrays.asList(rarity)))
+                .stream()
+                .filter(
+                        item -> item.getItemName().trim().toLowerCase().contains(nameContainingFilter.trim())
+                ).collect(Collectors.toList());
+        return ResponseEntity.ok(items);
     }
 
     @GetMapping("/rarities")//get_rarities

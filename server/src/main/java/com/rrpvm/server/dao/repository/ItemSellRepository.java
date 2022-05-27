@@ -14,4 +14,6 @@ public interface ItemSellRepository extends JpaRepository<ItemSell, Long> {
 
     @Query("select item from ItemSell item where item.itemRarity in :itemRarities")
     List<ItemSell> findAllByItemRarities(@Param("itemRarities") List<String> itemRarities);
+
+    List<ItemSell> findAllByItemNameContainingIgnoreCase(String itemName);
 }

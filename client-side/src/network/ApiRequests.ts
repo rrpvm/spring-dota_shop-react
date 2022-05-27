@@ -1,18 +1,19 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import ItemDTO from "../model/ItemDTO";
 import { createGetRequest } from "./RequestFactory";
 class ApiRequests {
-    private getItemsLengthReq = createGetRequest('http://localhost:8080/items/length?', '');
-    private getRarityListReq = createGetRequest('http://localhost:8080/rarities', '');
-    public getProductsLength(searchParams: URLSearchParams, onSuccess: (param: number) => void, onError?: () => void, config?: AxiosRequestConfig): void {
-        const promise = this.getItemsLengthReq.get(`${searchParams}`, config);
+    private getItemsRequest = createGetRequest('http://localhost:8080/items', 'xuy');
+    private getRarityListRequest = createGetRequest('http://localhost:8080/rarities', 'xuy');
+    public getItems(searchParams: URLSearchParams, onSuccess: (param: ItemDTO[]) => void, onError?: () => void, config?: AxiosRequestConfig): void {
+        const promise = this.getItemsRequest.get(`?${searchParams}`, config);
         promise.then((axiosResponse: AxiosResponse) => {
             onSuccess(axiosResponse.data);
         }).catch((axiosError: AxiosError) => {
             this.catchHandler(axiosError, onError);
         });
     }
-    public getRarityList(onSuccess: (param: any) => void, onError?: () => void, config?: AxiosRequestConfig): void {
-        const promise = this.getRarityListReq.get('', config);
+    public getRarityList(onSuccess: CallableFunction, onError?: () => void, config?: AxiosRequestConfig): void {
+        const promise = this.getRarityListRequest.get('', config);
         promise.then((axiosResponse: AxiosResponse) => {
             onSuccess(axiosResponse.data);
         }).catch((axiosError: AxiosError) => {

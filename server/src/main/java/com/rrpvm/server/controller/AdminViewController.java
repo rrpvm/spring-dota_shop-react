@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class AdminViewController {
     @Autowired
     private ItemSellRepository itemRepository;
-
     @PostMapping("/item")
     public ResponseEntity<String> createItem(@RequestBody @NotNull ItemSell item) {
         ItemSell existedItem = itemRepository.findByItemName(item.getItemName());

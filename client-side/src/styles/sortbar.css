@@ -1,0 +1,26 @@
+.sortbar-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  background: rgb(218, 218, 218);
+  border-radius: 3px;
+}
+.sortbar-sort-item {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: auto;
+  padding: 5px 15px;
+  border-radius: 3px;
+  transition: all 0.25s ease-in;
+  cursor: pointer;
+}
+.sortbar-sort-item:first-child {
+  cursor: default;
+}
+.sort-item-active {
+  background: #dca50e;
+}
