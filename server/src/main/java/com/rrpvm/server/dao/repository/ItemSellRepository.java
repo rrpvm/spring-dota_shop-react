@@ -15,5 +15,6 @@ public interface ItemSellRepository extends JpaRepository<ItemSell, Long> {
     @Query("select item from ItemSell item where item.itemRarity in :itemRarities")
     List<ItemSell> findAllByItemRarities(@Param("itemRarities") List<String> itemRarities);
 
-    List<ItemSell> findAllByItemNameContainingIgnoreCase(String itemName);
+    @Query("select item from ItemSell item where item.itemRarity in :itemRarities and lower(item.itemName) like lower(concat('%', concat(:nameContain,'%') ))")
+    List<ItemSell> findAllByItemRaritiesAndNameContainingIgnoreCase(@Param("itemRarities") List<String> itemRarities, @Param("nameContain") String nameContain);
 }
