@@ -1,5 +1,5 @@
+import '../../styles/navbar.css';
 import { Link } from 'react-router-dom';
-import '../styles/navbar.css';
 export const NavigationBar = (): JSX.Element => (
   <div className="navbar">
     <div className='navbar-wrapper container'>

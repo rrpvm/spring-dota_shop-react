@@ -1,12 +1,12 @@
 
-export const encodeImageFileAsURL = (e: React.FormEvent<HTMLInputElement>, setCallback: CallableFunction): void => {
+export const encodeImageFileAsURL = (e: React.FormEvent<HTMLInputElement>, setDataCallback: CallableFunction, setNameCallback: CallableFunction) => {
     let filesSelected = e.currentTarget.files;
     if (filesSelected === null) return;
     if (filesSelected.length > 0) {
         const fileToLoad: File = filesSelected[0];
         let fileReader = new FileReader();
         fileReader.onload = function (fileLoadedEvent: ProgressEvent<FileReader>) {
-            setCallback(fileLoadedEvent.target?.result);
+            setDataCallback(fileLoadedEvent.target?.result);
         }
         fileReader.readAsDataURL(fileToLoad);
     }

@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { CatalogView } from './views/CatalogView';
-import { NavigationBar } from './components/NavBar';
+import { NavigationBar } from './components/singletons/NavBar';
 import { CreateItemView } from './views/CreateItemView';
 function App() {
   return (

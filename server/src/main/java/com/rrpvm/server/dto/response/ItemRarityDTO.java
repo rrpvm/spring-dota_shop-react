@@ -1,16 +1,16 @@
-package com.rrpvm.server.dto;
+package com.rrpvm.server.dto.response;
 
 import com.rrpvm.server.model.ItemRarity;
 
-public class ItemRarityResponse {
+public class ItemRarityDTO {
     private int id;
     private String rarity;
 
-    public ItemRarityResponse(int id, String rarity) {
+    public ItemRarityDTO(int id, String rarity) {
         this.id = id;
         this.rarity = rarity;
     }
-    public ItemRarityResponse(ItemRarity rarity) {
+    public ItemRarityDTO(ItemRarity rarity) {
         this.id = rarity.ordinal();
         this.rarity = rarity.getRarity();
     }

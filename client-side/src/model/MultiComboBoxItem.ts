@@ -1,6 +1,6 @@
-export default class IMultiComboBoxItem {
-    private _text: string;
-    private _id: number;
+export default class MultiComboBoxItem {
+    private readonly _text: string;
+    private readonly _id: number;
     constructor(id: number, text: string) {
         this._id = id;
         this._text = text;

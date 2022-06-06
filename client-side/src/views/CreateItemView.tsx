@@ -1,32 +1,36 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
 import { useState } from "react";
+import { AxiosError, AxiosResponse } from "axios";
+import { encodeImageFileAsURL } from "../utilities/ImageConverter";
+import { Alert } from "../components/alerts/Alert";
+import axios from "axios";
+import ItemCreateDTO from "../model/DTO/request/ItemCreateDTO";
+/***/
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/Form"
-import { encodeImageFileAsURL } from "../utilities/ImageConverter";
-import ItemDTO from "../model/ItemDTO";
-import { Alert } from "../components/Alert";
-
 export const CreateItemView: React.FC = () => {
     const [itemName, setItemName] = useState<string>('');
-    const [itemImage, setItemImage] = useState<string>('');
     const [itemHero, setItemHero] = useState<string>('');
     const [itemRarity, setItemRarity] = useState<string>('');
     const [itemPrice, setItemPrice] = useState<string>('');//parse
     const [itemAvaliable, setItemAvaliable] = useState<number>(0);
+    // const [itemImageData, setImageData] = useState<string>('');
+    const [itemImageData, setImageData] = useState<File | null>(null);
     const [serverMessage, setServerMessage] = useState<string>('success');
-    const showAlert = () => {
-
-    }
-
-   /* const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const item: ItemDTO = new ItemDTO(itemName, itemImage, itemHero, itemRarity, parseFloat(itemPrice), itemAvaliable);
-        axios.post("http://localhost:8080/admin/item", item).then((response: AxiosResponse) => {
-            setServerMessage("success");
-        }).catch((error: AxiosError) => {
-            console.log(error.message);
+        if (itemImageData === null) return;
+        const newItem: ItemCreateDTO = new ItemCreateDTO(itemName, itemHero, itemRarity, parseFloat(itemPrice), itemAvaliable);
+        const formData = new FormData();
+        formData.append('file_image', itemImageData);
+        formData.append('item_data', new Blob([JSON.stringify(newItem)], {
+            type: "application/json"
+        }));
+        axios.post("http://localhost:8080/admin/item", formData, {
+            headers:{
+                "Content-type":"application/json",
+            }
         });
-    };*/
+    };
     const handlePriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         try {
             const txt: string = e.currentTarget.value;
@@ -45,19 +49,19 @@ export const CreateItemView: React.FC = () => {
             console.log(exception);
         }
     };
+    const handleFileInput = (e: React.FormEvent<HTMLInputElement>) => {
+        if (e.currentTarget.files === null) return;
+        setImageData(e.currentTarget.files[0]);
+    }
     return (
         <>
             {serverMessage.length > 0 && <Alert>{serverMessage}</Alert>}
             < div className="item-create-block" >
 
-                <form className="item-create-form" onSubmit={/*handleSubmit*/()=>{}}>
+                <form className="item-create-form" onSubmit={handleSubmit} encType="multipart/form-data">
                     <Form.Label>выберите изображение предмета</Form.Label>
-                    <input className="form-control" type="file" onChange={
-                        (e: React.FormEvent<HTMLInputElement>) => {
-                            encodeImageFileAsURL(e, (result: string) => { setItemImage(result); });
-                        }
-                    } />
-                    <img alt="preview :" src={itemImage} />
+                    <input className="form-control" type="file" onChange={handleFileInput} />
+                    <img alt="preview :" src="f" />
                     <br></br>
                     <Form.Label>Item's name</Form.Label>
                     <Form.Control type="text" placeholder="Name" value={itemName} onInput={(e: React.ChangeEvent<HTMLInputElement>) => { setItemName(e.currentTarget.value) }} />

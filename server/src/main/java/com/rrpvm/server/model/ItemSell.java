@@ -1,7 +1,7 @@
 package com.rrpvm.server.model;
 
+import com.rrpvm.server.dto.request.ItemSellDTO;
 import com.sun.istack.NotNull;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -13,27 +13,33 @@ public class ItemSell {
     private Long itemId;
     @Column(name = "item_name")
     private String itemName;
-    @Column(name = "item_image")
-    @Lob
-    private String itemImage;
-    @Column(name = "item_hame")
+    @Column(name = "item_hero")
     private String itemHero;
     @Column(name = "item_rarity")
     private String itemRarity;
     @Column(name = "item_price")
     private double itemPrice;
-    @Column(name = "item_avaliable")
-    private int itemsAvaliable;
+    @Column(name = "item_available")
+    private int itemsAvailable;
+    @Column(name = "item_image")
+    private String itemImageURL;
 
-    public ItemSell(@NotNull String itemName,@NotNull  String itemHero, @NotNull  String itemRarity,@NotNull String itemImage, double itemPrice, int itemsAvaliable) {
+    public ItemSell(@NotNull String itemName, @NotNull String itemHero, @NotNull String itemRarity, @NotNull String itemImageURL, double itemPrice, int itemsAvailable) {
         this.itemName = itemName;
         this.itemHero = itemHero;
         this.itemRarity = itemRarity;
         this.itemPrice = itemPrice;
-        this.itemsAvaliable = itemsAvaliable;
-        this.itemImage = itemImage;
+        this.itemsAvailable = itemsAvailable;
+        this.itemImageURL = itemImageURL;
     }
-
+    public ItemSell(@NotNull ItemSellDTO vOther, String itemImageURL) {
+        this.itemName = vOther.getItemName();
+        this.itemHero = vOther.getItemHero();
+        this.itemRarity = vOther.getItemRarity();
+        this.itemPrice = vOther.getItemPrice();
+        this.itemsAvailable = vOther.getItemAvailable();
+        this.itemImageURL = itemImageURL;
+    }
     public ItemSell() {
 
     }
@@ -78,19 +84,19 @@ public class ItemSell {
         this.itemPrice = itemPrice;
     }
 
-    public int getItemsAvaliable() {
-        return itemsAvaliable;
+    public int getItemsAvailable() {
+        return itemsAvailable;
     }
 
-    public void setItemsAvaliable(int itemsAvaliable) {
-        this.itemsAvaliable = itemsAvaliable;
+    public void setItemsAvailable(int itemsAvailable) {
+        this.itemsAvailable = itemsAvailable;
     }
 
-    public String getItemImage() {
-        return itemImage;
+    public String getItemImageURL() {
+        return itemImageURL;
     }
 
-    public void setItemImage(String itemImage) {
-        this.itemImage = itemImage;
+    public void setItemImageURL(String itemImage) {
+        this.itemImageURL = itemImage;
     }
 }

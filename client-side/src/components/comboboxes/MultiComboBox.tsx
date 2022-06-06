@@ -1,7 +1,7 @@
-import '../styles/multi_combo.css'
+import '../../styles/multi_combo.css'
 import { useState } from 'react';
-import { IMultiComboBoxProp } from '../interfaces/IMultiComboBoxProp';
-import IMultiComboBoxItem from '../model/IMultiComboBoxItem';
+import { IMultiComboBoxProp } from '../../interfaces/props/IMultiComboBoxProp';
+import MultiComboBoxItem from '../../model/MultiComboBoxItem';
 export const MultiComboBox: React.FC<IMultiComboBoxProp> = ({ selectedItems, allVariants, dataBindCallback }) => {
     const [searchText, setSearchText] = useState<string>('');
     const [inputOpened, setInputOpened] = useState<boolean>(false);
@@ -9,11 +9,11 @@ export const MultiComboBox: React.FC<IMultiComboBoxProp> = ({ selectedItems, all
     const onInputStateSwitch = () => { setInputOpened(!inputOpened) }
     const onSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => { setSearchText(e.currentTarget.value.trim().toLocaleLowerCase()); }
     const onDeleteItem = (id: number) => {
-        let _new: IMultiComboBoxItem[] = selectedItems.filter(item => item.id !== id);
+        let _new: MultiComboBoxItem[] = selectedItems.filter(item => item.id !== id);
         dataBindCallback(_new);
     }
-    const onAddItem = (value: IMultiComboBoxItem) => {
-        let _new: IMultiComboBoxItem[] = [...selectedItems, value];
+    const onAddItem = (value: MultiComboBoxItem) => {
+        let _new: MultiComboBoxItem[] = [...selectedItems, value];
         dataBindCallback(_new);
     }
     return (
