@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
 * {
   box-sizing: border-box;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  font-family: 'Source Sans Pro', sans-serif !important;
   margin: 0 !important;
   text-decoration: none !important;
 }

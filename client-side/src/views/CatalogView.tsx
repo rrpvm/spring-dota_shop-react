@@ -1,9 +1,9 @@
 import '../styles/catalog.css'
-import {useState, useEffect} from "react";
-import {useSearchParams} from "react-router-dom";
-import {MultiComboBox} from "../components/comboboxes/MultiComboBox";
-import {SortBar} from '../components/bars/SortBar';
-import {apiRequests} from '../network/ApiRequests';
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { MultiComboBox } from "../components/comboboxes/MultiComboBox";
+import { SortBar } from '../components/bars/SortBar';
+import { apiRequests } from '../network/ApiRequests';
 import ItemViewDTO from '../model/DTO/response/ItemViewDTO';
 import ItemPreview from '../components/singletons/ItemPreview';
 import RarityInfoDTO from "../model/DTO/RarityInfoDTO";
@@ -69,12 +69,12 @@ export const CatalogView = (): JSX.Element => {
                 <div className="catalog-left">
                     <div className={(isSearchFocused ? "active-search " : "") + "catalog-left-search"}>
                         <input type="text" placeholder="поиск по названию" value={itemNameFilter}
-                               onFocus={onSearchFocused}
-                               onBlur={onSearchBlured}
-                               onChange={onItemSearchChanged}
-                               onKeyDown={onSearchKeyDown}></input>
+                            onFocus={onSearchFocused}
+                            onBlur={onSearchBlured}
+                            onChange={onItemSearchChanged}
+                            onKeyDown={onSearchKeyDown}></input>
                     </div>
-                    <h2 style={{color: "white"}}>Rarity</h2>
+                    <h2 style={{ color: "white" }}>Rarity</h2>
                     <MultiComboBox
                         selectedItems={rarityOnSelection}
                         allVariants={rarityList?.map(item => new MultiComboBoxItem(item.id, item.rarity))}
@@ -90,7 +90,7 @@ export const CatalogView = (): JSX.Element => {
                         {
                             items?.length > 0 && items?.map((item: ItemViewDTO, index) => {
                                 return <ItemPreview key={index} imageURL={item.itemImageURL} itemName={item.itemName}
-                                                    itemPrice={item.itemPrice}></ItemPreview>
+                                    itemPrice={item.itemPrice}></ItemPreview>
                             })
                         }
                     </div>

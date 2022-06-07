@@ -65,6 +65,7 @@
   }
   .navbar-action-item:hover {
     background: #909090;
+    transform: rotateZ(15deg);
   }
   .navbar-action-item-link {
     font-size: 1rem;
