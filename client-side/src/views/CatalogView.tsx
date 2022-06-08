@@ -1,6 +1,6 @@
 import '../styles/catalog.css'
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { MultiComboBox } from "../components/comboboxes/MultiComboBox";
 import { SortBar } from '../components/bars/SortBar';
 import { apiRequests } from '../network/ApiRequests';
@@ -89,8 +89,8 @@ export const CatalogView = (): JSX.Element => {
                     <div className="catalog-items">
                         {
                             items?.length > 0 && items?.map((item: ItemViewDTO, index) => {
-                                return <ItemPreview key={index} imageURL={item.itemImageURL} itemName={item.itemName}
-                                    itemPrice={item.itemPrice}></ItemPreview>
+                                return <Link to={`/item/${item.itemId}`} key={item.itemId}><ItemPreview imageURL={item.itemImageURL} itemName={item.itemName}
+                                    itemPrice={item.itemPrice}></ItemPreview></Link>
                             })
                         }
                     </div>

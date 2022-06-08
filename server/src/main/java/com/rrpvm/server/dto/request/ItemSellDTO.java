@@ -1,7 +1,5 @@
 package com.rrpvm.server.dto.request;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class ItemSellDTO {
     private String itemName;
     private String itemHero;

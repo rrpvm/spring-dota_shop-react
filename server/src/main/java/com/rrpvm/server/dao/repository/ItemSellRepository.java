@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.List;
-import com.rrpvm.server.model.ItemSell;
+import com.rrpvm.server.model.entity.ItemSell;
 
 
 public interface ItemSellRepository extends JpaRepository<ItemSell, Long> {

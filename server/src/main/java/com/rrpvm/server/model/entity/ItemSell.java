@@ -1,4 +1,4 @@
-package com.rrpvm.server.model;
+package com.rrpvm.server.model.entity;
 
 import com.rrpvm.server.dto.request.ItemSellDTO;
 import com.sun.istack.NotNull;

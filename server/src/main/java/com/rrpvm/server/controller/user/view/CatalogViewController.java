@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import com.rrpvm.server.dao.repository.ItemSellRepository;
 import com.rrpvm.server.dto.response.ItemRarityDTO;
 import com.rrpvm.server.model.ItemRarity;
-import com.rrpvm.server.model.ItemSell;
+import com.rrpvm.server.model.entity.ItemSell;
 
 @RestController
 @RequestMapping("/")

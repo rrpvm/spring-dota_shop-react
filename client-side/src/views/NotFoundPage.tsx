@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
-import { useState } from 'react';
 import { useRef } from 'react';
 import '../styles/404.css'
 const NotFoundPage: React.FC = () => {
-    const width = window.screen.width;
-    const height = window.screen.height;
+    let width = window.screen.availWidth;
+    let height = window.screen.availHeight;
     const precision = 150;
     const canvas = useRef<HTMLCanvasElement | null>(null);
-    const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
+    let context: CanvasRenderingContext2D | null = (null);
     let particles: { x: number, y: number }[] = [];
     let time: number = 0;
     let accumulator: number = 0;
@@ -18,15 +17,17 @@ const NotFoundPage: React.FC = () => {
     useEffect(() => {
         if (canvas === null) return;
         if (canvas.current === null) return;
-        setContext(canvas.current.getContext('2d'));
-        if (context === null) return;
+        context = canvas.current.getContext('2d');
         for (let i = 0; i < Math.PI * 2.0; i += (2.0 * Math.PI) / precision) {
             sinTable.push(Math.sin(i));
             cosTable.push(Math.cos(i));
         }
-        console.log(sinTable.length);
-        initialize(context);
     }, []);
+    useEffect(() => {
+        if (context === null) return;
+        initialize(context);
+        render();
+    }, [context]);
     const initialize = (ctx: CanvasRenderingContext2D) => {
         ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, width, height);
@@ -43,10 +44,11 @@ const NotFoundPage: React.FC = () => {
                 if (_color !== 0xFF000000) particles.push({ x, y });
             }
         }
-        render();
     }
     const render = () => {
-        if (context === null) return;
+        if (context === null) {
+            return;
+        }
         let old = time;
         time = performance.now();
         const delta = time - old;

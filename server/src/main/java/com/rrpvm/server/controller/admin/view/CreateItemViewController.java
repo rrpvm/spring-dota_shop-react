@@ -1,7 +1,7 @@
 package com.rrpvm.server.controller.admin.view;
 
 import com.rrpvm.server.dto.request.ItemSellDTO;
-import com.rrpvm.server.model.ItemSell;
+import com.rrpvm.server.model.entity.ItemSell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
