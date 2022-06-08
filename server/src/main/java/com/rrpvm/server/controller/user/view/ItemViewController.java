@@ -14,7 +14,6 @@ import java.util.NoSuchElementException;
 public class ItemViewController {
     @Autowired
     private ItemSellRepository itemSellRepository;
-
     @GetMapping("")
     private ResponseEntity<ItemSell> getItem(@RequestParam(name = "id", required = true) int id) {
         ItemSell item = null;

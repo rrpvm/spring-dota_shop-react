@@ -1,4 +1,4 @@
-import '../../styles/sortbar.css'
+import '../../styles/components/sortbar.css'
 import { useEffect, useState } from 'react'
 import ISortBarProp from '../../interfaces/props/ISortBarProp'
 import SortBarItem from '../../model/SortBarItem'

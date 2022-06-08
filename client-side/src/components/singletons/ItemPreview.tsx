@@ -1,4 +1,4 @@
-import '../../styles/item_preview.css'
+import '../../styles/components/item_preview.css'
 import ItemPreviewProp from "../../interfaces/props/ItemPreviewProp";
 
 const ItemPreview: React.FC<ItemPreviewProp> = ({ itemName, itemPrice, imageURL }) => {

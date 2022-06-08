@@ -1,4 +1,4 @@
-import '../../styles/multi_combo.css'
+import '../../styles/components/multi_combo.css'
 import { useState } from 'react';
 import { IMultiComboBoxProp } from '../../interfaces/props/IMultiComboBoxProp';
 import MultiComboBoxItem from '../../model/MultiComboBoxItem';

@@ -1,4 +1,4 @@
-import '../styles/catalog.css'
+import '../styles/views/catalog.css'
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { MultiComboBox } from "../components/comboboxes/MultiComboBox";
@@ -88,7 +88,7 @@ export const CatalogView = (): JSX.Element => {
                     </div>
                     <div className="catalog-items">
                         {
-                            items?.length > 0 && items?.map((item: ItemViewDTO, index) => {
+                            items?.length > 0 && items?.map((item: ItemViewDTO) => {
                                 return <Link to={`/item/${item.itemId}`} key={item.itemId}><ItemPreview imageURL={item.itemImageURL} itemName={item.itemName}
                                     itemPrice={item.itemPrice}></ItemPreview></Link>
                             })

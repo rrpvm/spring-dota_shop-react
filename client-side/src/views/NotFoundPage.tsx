@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRef } from 'react';
-import '../styles/404.css'
+import '../styles/views/404.css'
 const NotFoundPage: React.FC = () => {
     let width = window.screen.availWidth;
     let height = window.screen.availHeight;

@@ -1,4 +1,4 @@
-import '../../styles/navbar.css';
+import '../../styles/components/navbar.css';
 import { Link } from 'react-router-dom';
 export const NavigationBar = (): JSX.Element => (
   <div className="navbar">

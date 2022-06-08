@@ -1,0 +1,14 @@
+.item-create-block{
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    margin: 0 auto !important;
+}
+.item-create-form{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+.item-create-form input, button{
+    color: black;
+}
