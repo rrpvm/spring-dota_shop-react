@@ -1,14 +1,50 @@
-.item-create-block{
+@media (min-width: 768px) {
+  .item-create-block {
     display: flex;
     flex-direction: row;
     width: 60%;
-    margin: 0 auto !important;
-}
-.item-create-form{
+    margin: 1.5rem auto !important;
+  }
+  .item-create-form {
     display: flex;
     width: 100%;
-    flex-direction: column;
-}
-.item-create-form input, button{
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .item-create-form input,
+  button {
     color: black;
+  }
+  .item-create-form span {
+    align-self: flex-start;
+  }
+  .image-creation-preview {
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .form-submit-button {
+    font-size: 1.5rem;
+    padding: 0.35em 0.7em;
+    align-self: flex-end;
+    transition: all 0.25s ease-in-out;
+    background: rgb(239, 239, 239);
+    border-top-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    overflow: hidden;
+  }
+  .form-submit-button:hover {
+    background: rgb(209, 209, 209);
+  }
+  .item-create-form .form-input-container {
+    width: 50% !important;
+    padding-right: 15px;
+  }
+  textarea {
+    color: black;
+    margin: 10px 0px !important;
+    border-radius: 4px;
+    outline: none;
+  }
 }

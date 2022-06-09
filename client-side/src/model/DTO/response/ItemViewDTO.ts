@@ -5,12 +5,13 @@ export default class ItemViewDTO {
     private _itemId: number;
     private _itemName: string;
     private _itemHero: string;
+    private _itemDescription: string;
     private _itemRarity: RarityInfoDTO;
     private _itemPrice: number;
     private _itemsAvailable: number;
     private _itemImageURL: string;
 
-    constructor(itemId: number, itemName: string, itemHero: string, itemRarity: RarityInfoDTO, itemPrice: number, itemsAvaliable: number, itemImageURL: string) {
+    constructor(itemId: number, itemName: string, itemHero: string, itemDescription: string, itemRarity: RarityInfoDTO, itemPrice: number, itemsAvaliable: number, itemImageURL: string) {
         this._itemId = itemId;
         this._itemName = itemName;
         this._itemHero = itemHero;
@@ -18,6 +19,7 @@ export default class ItemViewDTO {
         this._itemPrice = itemPrice;
         this._itemsAvailable = itemsAvaliable;
         this._itemImageURL = itemImageURL;
+        this._itemDescription = itemDescription;
     }
 
     get itemId(): number {
@@ -74,5 +76,11 @@ export default class ItemViewDTO {
 
     set itemImageURL(value: string) {
         this._itemImageURL = value;
+    }
+    get itemDescription(): string {
+        return this._itemDescription;
+    }
+    set itemDescription(value: string) {
+        this._itemDescription = value;
     }
 }

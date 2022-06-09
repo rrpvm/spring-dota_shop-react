@@ -72,7 +72,7 @@
   display: grid;
   height: 24px;
   width: 24px;
-  background: url(https://market.dota2.net/images/new/dota_cart.svg?2) no-repeat;
+  background: url('../../../public/assets/images/buy_cart.svg') no-repeat;
 }
 .item-header-right {
   width: 66%;

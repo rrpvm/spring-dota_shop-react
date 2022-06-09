@@ -21,7 +21,6 @@ import com.rrpvm.server.model.entity.ItemSell;
 public class CatalogViewController {
     @Autowired
     private ItemSellRepository itemRepository;
-
     @GetMapping("/items")
     public ResponseEntity<List<ItemSell>> getItems(@RequestParam(required = false) String[] rarity, @RequestParam(required = false, name = "name") String nameContains) {
         if (rarity == null) return ResponseEntity.noContent().build();

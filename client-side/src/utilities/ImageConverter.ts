@@ -1,5 +1,5 @@
 
-export const encodeImageFileAsURL = (e: React.FormEvent<HTMLInputElement>, setDataCallback: CallableFunction, setNameCallback: CallableFunction) => {
+export const encodeImageFileAsURL = (e: React.FormEvent<HTMLInputElement>, setDataCallback: CallableFunction) => {
     let filesSelected = e.currentTarget.files;
     if (filesSelected === null) return;
     if (filesSelected.length > 0) {

@@ -1,16 +1,18 @@
 package com.rrpvm.server.dto.request;
 
-public class ItemSellDTO {
-    private String itemName;
-    private String itemHero;
-    private String itemRarity;
-    private Double itemPrice;
-    private int itemAvailable;
+public class ItemCreateDTO {
+    private final String itemName;
+    private final String itemHero;
+    private final String itemRarity;
+    private final String itemDescription;
+    private final Double itemPrice;
+    private final int itemAvailable;
 
-    public ItemSellDTO(String itemName, String itemHero, String itemRarity, Double itemPrice, int itemAvailable) {
+    public ItemCreateDTO(String itemName, String itemHero, String itemRarity,String itemDescription, Double itemPrice,int itemAvailable) {
         this.itemName = itemName;
         this.itemHero = itemHero;
         this.itemRarity = itemRarity;
+        this.itemDescription = itemDescription;
         this.itemPrice = itemPrice;
         this.itemAvailable = itemAvailable;
     }
@@ -35,4 +37,7 @@ public class ItemSellDTO {
         return itemAvailable;
     }
 
+    public String getDescription() {
+        return itemDescription;
+    }
 }

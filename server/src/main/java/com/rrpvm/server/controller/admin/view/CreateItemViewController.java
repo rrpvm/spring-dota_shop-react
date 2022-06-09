@@ -1,6 +1,6 @@
 package com.rrpvm.server.controller.admin.view;
 
-import com.rrpvm.server.dto.request.ItemSellDTO;
+import com.rrpvm.server.dto.request.ItemCreateDTO;
 import com.rrpvm.server.model.entity.ItemSell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,7 +21,7 @@ public class CreateItemViewController {
     private ItemSellRepository itemRepository;
 
     @PostMapping(value = "/item" ,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<String> createItem(@RequestPart("file_image") MultipartFile itemImageData, @RequestPart("item_data") ItemSellDTO itemToCreate) {
+    public ResponseEntity<String> createItem(@RequestPart("file_image") MultipartFile itemImageData, @RequestPart("item_data") ItemCreateDTO itemToCreate) {
         if (itemImageData == null || itemToCreate == null) {
             //exception
             return ResponseEntity.badRequest().body("failed");
@@ -29,7 +29,6 @@ public class CreateItemViewController {
         try {
             if (itemRepository.findByItemName(itemToCreate.getItemName()) != null)
                 return ResponseEntity.badRequest().body("exist");
-
             byte[] decode = itemImageData.getBytes();
             String fileName = new StringBuilder(itemToCreate.getItemName()).append("_").append(itemImageData.getOriginalFilename()).toString();
             String path = new StringBuilder(getClass().getResource("/static/images/").getFile()).append(fileName).toString();
