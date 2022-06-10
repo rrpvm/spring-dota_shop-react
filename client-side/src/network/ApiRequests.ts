@@ -2,9 +2,9 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { createGetRequest, createPostRequest } from "./RequestFactory";
 import IRequestAttachment from "../interfaces/IRequestAttachment";
 class ApiRequests {
-    private getItemListRequest = createGetRequest('http://localhost:8080/public/v1/items', 'literaturnoe slovo');
+    private getItemListRequest = createGetRequest('http://localhost:8080/public/v1/catalog/items', 'literaturnoe slovo');
+    private getRaritiesRequest = createGetRequest('http://localhost:8080/public/v1/catalog/rarities', 'literaturnoe slovo');
     private getItemRequest = createGetRequest('http://localhost:8080/public/v1/item', 'literaturnoe slovo');
-    private getRaritiesRequest = createGetRequest('http://localhost:8080/public/v1/rarities', 'literaturnoe slovo');
     private addItemRequest = createPostRequest('http://localhost:8080/admin/v1/item', 'literaturnoe slovo');
     public getItem(id: string, attachment: IRequestAttachment): void {
         const promise = this.getItemRequest.get(`?id=${id}`);

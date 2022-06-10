@@ -16,7 +16,7 @@ import com.rrpvm.server.model.ItemRarity;
 import com.rrpvm.server.model.entity.ItemSell;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("public/v1/catalog")
 @CrossOrigin("*")
 public class CatalogViewController {
     @Autowired

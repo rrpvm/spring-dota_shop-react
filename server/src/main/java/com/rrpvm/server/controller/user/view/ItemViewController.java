@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/item")
-@CrossOrigin("*")
+@RequestMapping("public/v1/item")
+@CrossOrigin("http://localhost:3000")
 public class ItemViewController {
     @Autowired
     private ItemSellRepository itemSellRepository;
-    @GetMapping("")
+    @GetMapping("/")
     private ResponseEntity<ItemSell> getItem(@RequestParam(name = "id", required = true) int id) {
         ItemSell item = null;
         try {
