@@ -14,13 +14,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/admin")
-@CrossOrigin("*")
+@RequestMapping("/admin/v1")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CreateItemViewController {
     @Autowired
     private ItemSellRepository itemRepository;
 
-    @PostMapping(value = "/item" ,consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/item", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> createItem(@RequestPart("file_image") MultipartFile itemImageData, @RequestPart("item_data") ItemCreateDTO itemToCreate) {
         if (itemImageData == null || itemToCreate == null) {
             //exception

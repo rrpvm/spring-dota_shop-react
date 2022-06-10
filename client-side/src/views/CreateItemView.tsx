@@ -1,11 +1,14 @@
 import '../styles/views/create_item_page.css'
 import { useState } from "react";
-import axios from "axios";
+import { AxiosError, AxiosResponse } from "axios";
+import { apiRequests } from '../network/ApiRequests';
 import { encodeImageFileAsURL } from "../utilities/ImageConverter";
 import ItemCreateDTO from "../model/DTO/request/ItemCreateDTO";
 import FormInput from '../components/singletons/FormInput';
+import { Alert } from '../components/alerts/Alert';
 
 export const CreateItemView: React.FC = () => {
+    //<form data section start>
     const [itemName, setItemName] = useState<string>('');
     const [itemHero, setItemHero] = useState<string>('');
     const [itemRarity, setItemRarity] = useState<string>('');
@@ -13,9 +16,14 @@ export const CreateItemView: React.FC = () => {
     const [itemDescription, setItemDescription] = useState<string>('');
     const [itemAvaliable, setItemAvaliable] = useState<number>(0);
     const [itemImageData, setImageData] = useState<File | null>(null);
-    const [imageBase64, setImagePreview] = useState<string>('');
+    //<form data section end>
+    const [imageBase64, setImagePreview] = useState<string>('');//for preview
+    const [formRequestStatus, setRequestStatus] = useState<number>(-1);
+    //
+    let bForceClosedAlert = false;
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        closeAlertMessage(0);
         if (itemImageData === null) return;
         const newItem: ItemCreateDTO = new ItemCreateDTO(itemName, itemHero, itemRarity, itemDescription, parseFloat(itemPrice), itemAvaliable);
         const formData = new FormData();
@@ -23,13 +31,20 @@ export const CreateItemView: React.FC = () => {
         formData.append('item_data', new Blob([JSON.stringify(newItem)], {
             type: "application/json"
         }));
-        axios.post("http://localhost:8080/admin/item", formData, {
-            headers: {
-                "Content-type": "application/json",
-            }
-        });
+        apiRequests.addItem(formData, { onSuccess: onCreateSuccess, onError: onCreateFailed });
         console.log(JSON.stringify(newItem));
     };
+    const onCreateSuccess = (response: AxiosResponse) => {
+        if (response.status === undefined) return;
+        setRequestStatus(response.status);
+        closeAlertMessage(4000);
+    }
+    const onCreateFailed = (error: AxiosError) => {
+        if (error.response === undefined) return;
+        setRequestStatus(error.response?.status);
+        closeAlertMessage(2000);
+    }
+
     const handleFileInput = (e: React.FormEvent<HTMLInputElement>) => {
         if (e.currentTarget.files === null) return;
         setImageData(e.currentTarget.files[0]);
@@ -70,15 +85,29 @@ export const CreateItemView: React.FC = () => {
 
         }
     };
+    const closeAlertMessage = (timeout: number) => {
+        if (timeout === -1) {
+            setRequestStatus(-1);
+            bForceClosedAlert = true;
+            setTimeout(() => { bForceClosedAlert = false; }, 4000);
+            return;
+        }
+        if (bForceClosedAlert === true) {
+            bForceClosedAlert = false;
+            return;
+        }
+        setTimeout(() => setRequestStatus(-1), timeout);
+    }
     return (
         <>
+            <Alert type={formRequestStatus === 200 ? "success" : "failure"} active={formRequestStatus !== -1} closeCallback={closeAlertMessage}>{formRequestStatus === 200 ? "created" : "failure"}</Alert>
             <div className="item-create-block" >
                 <form className="item-create-form" onSubmit={handleSubmit} encType="multipart/form-data">
                     <span>Выберите изображение предмета</span>
                     <input className="form-input" type="file" onChange={handleFileInput} />
                     {
                         imageBase64.length > 0 ?
-                            <div style={{width:"100%"}}><img alt="" src={imageBase64} className="image-creation-preview" /></div> : <></>
+                            <div style={{ width: "100%" }}><img alt="" src={imageBase64} className="image-creation-preview" /></div> : <></>
                     }
                     <FormInput
                         data={itemName}
