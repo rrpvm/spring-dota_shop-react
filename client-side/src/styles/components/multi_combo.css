@@ -29,9 +29,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #232323;
     padding: 0px 3px;
   }
   .multi-combo-delete-button {
+    color: #232323;
     margin-left: auto !important;
     margin-right: 3px !important;
     display: flex;

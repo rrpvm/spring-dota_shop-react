@@ -2,7 +2,9 @@
 ## Create item page
 !['create item'](git_images/create_item.png)
 ## Catalog page
-!['create item'](git_images/show_list.png)
+!['create item'](git_images/catalog.png)
+## 404 page
+!['create item'](git_images/404.png)
 
 # How to run:
 * run `npm install`
