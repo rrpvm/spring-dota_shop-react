@@ -1,6 +1,6 @@
 import '../styles/views/catalog.css'
 import { useState, useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { MultiComboBox } from "../components/comboboxes/MultiComboBox";
 import { SortBar } from '../components/bars/SortBar';
 import { apiRequests } from '../network/ApiRequests';
@@ -9,6 +9,7 @@ import ItemPreview from '../components/singletons/ItemPreview';
 import RarityInfoDTO from "../model/DTO/RarityInfoDTO";
 import MultiComboBoxItem from '../model/MultiComboBoxItem';
 import SortBarItem from '../model/SortBarItem';
+import { AxiosResponse } from 'axios';
 
 
 export const CatalogView = (): JSX.Element => {
@@ -37,11 +38,11 @@ export const CatalogView = (): JSX.Element => {
         if (itemNameFilter.length === 0) updateNameFilterParams()
     }, [itemNameFilter]);
     useEffect(() => {
-        apiRequests.getItems(searchParams, setItems)
+        apiRequests.getItemList(searchParams, { onSuccess: onSuccessItemListFetch })
     }, [searchParams]);//or [rarirityOnSelection]
     useEffect(() => {
         setSearchParams({});
-        apiRequests.getRarityList(setRarityList);
+        apiRequests.getRarities({ onSuccess: onSuccessRarityListFetch });
     }, []);
     const onSearchFocused = () => setSearchFocused(true);
     const onSearchBlured = () => setSearchFocused(false);
@@ -63,6 +64,8 @@ export const CatalogView = (): JSX.Element => {
         mutable.append('name', itemNameFilter);
         setSearchParams(mutable);
     }
+    const onSuccessItemListFetch = (response: AxiosResponse) => setItems(response.data);
+    const onSuccessRarityListFetch = (response: AxiosResponse) => setRarityList(response.data);
     return (
         <div className="catalog-wrapper">
             <div className="container">
@@ -89,8 +92,8 @@ export const CatalogView = (): JSX.Element => {
                     <div className="catalog-items">
                         {
                             items?.length > 0 && items?.map((item: ItemViewDTO) => {
-                                return <Link to={`/item/${item.itemId}`} key={item.itemId}><ItemPreview imageURL={item.itemImageURL} itemName={item.itemName}
-                                    itemPrice={item.itemPrice}></ItemPreview></Link>
+                                return <ItemPreview itemId={item.itemId} imageURL={item.itemImageURL} itemName={item.itemName}
+                                    itemPrice={item.itemPrice} key={item.itemId}></ItemPreview>
                             })
                         }
                     </div>
@@ -101,6 +104,6 @@ export const CatalogView = (): JSX.Element => {
                     <h2>Created by @rrpvm</h2>
                 </div>
             </div>
-        </div>
+        </div >
     )
 };

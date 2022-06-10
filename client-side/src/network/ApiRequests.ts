@@ -1,23 +1,27 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { createGetRequest } from "./RequestFactory";
-import ItemViewDTO from "../model/DTO/response/ItemViewDTO";
+import IRequestAttachment from "../interfaces/IRequestAttachment";
 class ApiRequests {
-    private getItemsRequest = createGetRequest('http://localhost:8080/items', 'xuy');
-    private getRarityListRequest = createGetRequest('http://localhost:8080/rarities', 'xuy');
-    public getItems(searchParams: URLSearchParams, onSuccess: (param: ItemViewDTO[]) => void, onError?: () => void, config?: AxiosRequestConfig): void {
-        const promise = this.getItemsRequest.get(`?${searchParams}`, config);
-        promise.then((axiosResponse: AxiosResponse) => {
-            onSuccess(axiosResponse.data);
-        }).catch((axiosError: AxiosError) => {
-            this.catchHandler(axiosError, onError);
-        });
+    private getItemListRequest = createGetRequest('http://localhost:8080/items', 'xuy');
+    private getItemRequest = createGetRequest('http://localhost:8080/item', 'xuy');
+    private getRaritiesRequest = createGetRequest('http://localhost:8080/rarities', 'xuy');
+    public getItem(id: string, attachment: IRequestAttachment): void {
+        const promise = this.getItemRequest.get(`?id=${id}`);
+        this.promiseHandler(promise, attachment);
     }
-    public getRarityList(onSuccess: CallableFunction, onError?: () => void, config?: AxiosRequestConfig): void {
-        const promise = this.getRarityListRequest.get('', config);
+    public getItemList(searchParams: URLSearchParams, attachment: IRequestAttachment, config?: AxiosRequestConfig): void {
+        const promise = this.getItemListRequest.get(`?${searchParams}`, config);
+        this.promiseHandler(promise, attachment);
+    }
+    public getRarities(attachment: IRequestAttachment, config?: AxiosRequestConfig): void {
+        const promise = this.getRaritiesRequest.get('', config);
+        this.promiseHandler(promise, attachment);
+    }
+    private promiseHandler(promise: Promise<AxiosResponse<any, any>>, attachment: IRequestAttachment) {
         promise.then((axiosResponse: AxiosResponse) => {
-            onSuccess(axiosResponse.data);
+            attachment.onSuccess(axiosResponse);
         }).catch((axiosError: AxiosError) => {
-            this.catchHandler(axiosError, onError);
+            this.catchHandler(axiosError, attachment.onError);
         });
     }
     private catchHandler(axiosError: AxiosError, overrideFunction?: CallableFunction) {

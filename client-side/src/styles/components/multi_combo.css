@@ -107,15 +107,20 @@
     background: #232323;
     transition: all 0.25s ease-in-out;
     padding: 5px 10px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
   .multi-combo-item-variant:hover {
     background: #ffdd45;
+    border-radius: 0px;
     color: #232323;
   }
   .multi-combo-variants-wrapper {
     display: flex;
     flex-direction: column;
     border: 1px solid #ffdd45;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
   .multi-variant-disabled {
     display: none;

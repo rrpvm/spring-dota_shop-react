@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import '../styles/views/404.css'
 const NotFoundPage: React.FC = () => {
-    let width = window.screen.availWidth;
-    let height = window.screen.availHeight;
-    const precision = 150;
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    const precision = 150;//also is speed
     const canvas = useRef<HTMLCanvasElement | null>(null);
     let context: CanvasRenderingContext2D | null = (null);
     let particles: { x: number, y: number }[] = [];

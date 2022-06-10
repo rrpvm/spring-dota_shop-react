@@ -1,11 +1,9 @@
 import '../styles/views/create_item_page.css'
 import { useState } from "react";
 import axios from "axios";
-import { Alert } from "../components/alerts/Alert";
 import { encodeImageFileAsURL } from "../utilities/ImageConverter";
 import ItemCreateDTO from "../model/DTO/request/ItemCreateDTO";
 import FormInput from '../components/singletons/FormInput';
-import { json } from 'stream/consumers';
 
 export const CreateItemView: React.FC = () => {
     const [itemName, setItemName] = useState<string>('');
@@ -78,7 +76,10 @@ export const CreateItemView: React.FC = () => {
                 <form className="item-create-form" onSubmit={handleSubmit} encType="multipart/form-data">
                     <span>Выберите изображение предмета</span>
                     <input className="form-input" type="file" onChange={handleFileInput} />
-                    {imageBase64.length > 0 ? <img alt="" src={imageBase64} className="image-creation-preview" /> : <></>}
+                    {
+                        imageBase64.length > 0 ?
+                            <div style={{width:"100%"}}><img alt="" src={imageBase64} className="image-creation-preview" /></div> : <></>
+                    }
                     <FormInput
                         data={itemName}
                         label="item's name"
@@ -113,8 +114,11 @@ export const CreateItemView: React.FC = () => {
                         inputType="text"
                         bindCallback={onItemAvailableInput}
                     ></FormInput>
-                    <div style={{ width: "50%", height: "1px", opacity: "0" }}></div>
-                    <textarea value={itemDescription} onChange={onItemDescriptionInput} placeholder="description" />
+                    <div style={{ width: "50%", maxHeight: "100px", display: "flex", flexDirection: "column" }}>
+                        <span>Item's description</span>
+                        <textarea value={itemDescription} onChange={onItemDescriptionInput} placeholder="description" style={{ height: "46px", padding: "5px 10px" }} />
+                    </div>
+
                     <div style={{ width: "100%", height: "1px", opacity: "0" }}></div>
                     <button type='submit' className='form-submit-button'>create</button>
                 </form>

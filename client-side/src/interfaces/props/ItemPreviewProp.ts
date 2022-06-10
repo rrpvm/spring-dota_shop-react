@@ -1,5 +1,6 @@
-export default interface ItemPreviewProp{
-    imageURL : string,
-    itemName : string,
-    itemPrice : number;
+export default interface ItemPreviewProp {
+    itemId: number;
+    imageURL: string,
+    itemName: string,
+    itemPrice: number;
 };
