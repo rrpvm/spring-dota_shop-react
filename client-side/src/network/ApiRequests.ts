@@ -5,7 +5,8 @@ class ApiRequests {
     private getItemListRequest = createGetRequest('http://localhost:8080/public/v1/catalog/items', 'literaturnoe slovo');
     private getRaritiesRequest = createGetRequest('http://localhost:8080/public/v1/catalog/rarities', 'literaturnoe slovo');
     private getItemRequest = createGetRequest('http://localhost:8080/public/v1/item', 'literaturnoe slovo');
-    private addItemRequest = createPostRequest('http://localhost:8080/admin/v1/item', 'literaturnoe slovo');
+    private addItemRequest = createPostRequest('http://localhost:8080/admin/v1/create/item', 'literaturnoe slovo');
+    private readonly getResource : string ='http://localhost:8080/public/v1/resources/';
     public getItem(id: string, attachment: IRequestAttachment): void {
         const promise = this.getItemRequest.get(`?id=${id}`);
         this.promiseHandler(promise, attachment);
@@ -21,6 +22,9 @@ class ApiRequests {
     public addItem(data: any, attachment: IRequestAttachment, config?: AxiosRequestConfig): void {
         const promise = this.addItemRequest.post('', data, config);
         this.promiseHandler(promise, attachment);
+    }
+    public getImageURL(itemImageUrl? : string) : string{
+        return this.getResource + "image/" + itemImageUrl;
     }
     private promiseHandler(promise: Promise<AxiosResponse<any, any>>, attachment: IRequestAttachment) {
         promise.then((axiosResponse: AxiosResponse) => {

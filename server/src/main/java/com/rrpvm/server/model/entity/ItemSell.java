@@ -2,24 +2,30 @@ package com.rrpvm.server.model.entity;
 
 import com.sun.istack.NotNull;
 
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.Column;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.GenerationType;
+import javax.persistence.FetchType;
 
 import com.rrpvm.server.dto.request.ItemCreateDTO;
 
+import java.util.List;
+
 
 @Entity
-@Table(name = "items")
+@Table(name = "items_list")
 public class ItemSell {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "item_id")
     private Long itemId;
     @Column(name = "item_name", nullable = false)
     @Size(min = 4, max = 255)
@@ -41,8 +47,17 @@ public class ItemSell {
     private int itemsAvailable;
     @Column(name = "item_image", nullable = false)
     private String itemImageURL;
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = ItemSoldLog.class)
+    @JoinTable(name = "items_sell_history",
+            joinColumns = {
+                    @JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false, unique = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "sell_id", referencedColumnName = "log_id", nullable = false, unique = false)
+            })
+    private List<ItemSoldLog> liquidityLog;
 
-    public ItemSell(@NotNull String itemName, @NotNull String itemHero, @NotNull String itemRarity, @NotNull String itemDescription, @NotNull String itemImageURL, double itemPrice, int itemsAvailable) {
+    public ItemSell(@NotNull String itemName, @NotNull String itemHero, @NotNull String itemRarity, @NotNull String itemDescription, @NotNull String itemImageURL, double itemPrice, int itemsAvailable, List<ItemSoldLog> logs) {
         this.itemName = itemName;
         this.itemHero = itemHero;
         this.itemRarity = itemRarity;
@@ -50,7 +65,9 @@ public class ItemSell {
         this.itemPrice = itemPrice;
         this.itemsAvailable = itemsAvailable;
         this.itemImageURL = itemImageURL;
+        this.liquidityLog = logs;
     }
+
     public ItemSell(@NotNull ItemCreateDTO vOther, String itemImageURL) {
         this.itemDescription = vOther.getDescription();
         this.itemName = vOther.getItemName();
@@ -127,5 +144,13 @@ public class ItemSell {
 
     public void setItemDescription(String itemDescription) {
         this.itemDescription = itemDescription;
+    }
+
+    public List<ItemSoldLog> getLiquidityLog() {
+        return liquidityLog;
+    }
+
+    public void setLiquidityLog(List<ItemSoldLog> liquidityLog) {
+        this.liquidityLog = liquidityLog;
     }
 }

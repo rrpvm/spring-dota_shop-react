@@ -64,7 +64,7 @@
     transition: all 0.3s;
   }
   .navbar-action-item:hover {
-    background: #636363;
+    background: #434343;
     transform: rotateZ(15deg);
   }
   .navbar-action-item-link {

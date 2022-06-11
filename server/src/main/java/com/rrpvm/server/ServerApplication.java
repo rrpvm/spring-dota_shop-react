@@ -12,8 +12,10 @@ public class ServerApplication implements CommandLineRunner {
     public static void main(String[] args) {
         SpringApplication.run(ServerApplication.class, args);
     }
+
     @Autowired
     private ItemSellRepository itemRepository;
+
     @Override
     public void run(String... args) throws Exception {
        /*  ArrayList<ItemSell> items = new ArrayList<>(Arrays.asList(

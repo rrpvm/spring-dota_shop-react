@@ -34,7 +34,7 @@ const ItemPage: React.FC = () => {
             <div className="item-container">
                 <div className='item-page-header'>
                     <div className='item-header-left'>
-                        <img src={`http://localhost:8080/resources/static/images/${itemData?.itemImageURL}`} alt=""></img>
+                        <img src={apiRequests.getImageURL(itemData?.itemImageURL)} alt=""></img>
                         <span className='card-item' style={{ fontSize: "2rem" }}>{itemData?.itemPrice} $</span>
                         <div className='card-item'>
                             <div className='buy-button'>Buy Item</div>
