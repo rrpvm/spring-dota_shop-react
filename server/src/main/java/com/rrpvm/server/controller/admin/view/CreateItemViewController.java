@@ -2,6 +2,7 @@ package com.rrpvm.server.controller.admin.view;
 
 import com.rrpvm.server.dto.request.ItemCreateDTO;
 import com.rrpvm.server.exception.admin.ItemAlreadyExistException;
+import com.rrpvm.server.exception.user.ResourcePathAlreadyExist;
 import com.rrpvm.server.model.entity.ItemSell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Null;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
@@ -34,7 +36,7 @@ public class CreateItemViewController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> createItem(@RequestPart("file_image") MultipartFile itemImageData,
                                              @RequestPart("item_data") ItemCreateDTO itemToCreate)
-            throws NullPointerException, ItemAlreadyExistException, IOException {
+            throws NullPointerException, ItemAlreadyExistException, ResourcePathAlreadyExist, IOException, URISyntaxException {
         if (itemToCreate == null || itemToCreate == null) {
             throw new NullPointerException("data mismatch");//unchecked
         }
@@ -42,8 +44,17 @@ public class CreateItemViewController {
             throw new ItemAlreadyExistException();
         byte[] decode = itemImageData.getBytes();
         String fileName = new StringBuilder(itemToCreate.getItemName()).append("_").append(itemImageData.getOriginalFilename()).toString();
-        String path = new StringBuilder(getClass().getResource("/static/images/").getFile()).append(fileName).toString();
+        String path = new StringBuilder(getClass().getResource("/").getFile().substring(1)).append("static/images/").append(fileName).toString();
         File newImage = new File(path);
+        newImage.getParentFile().mkdirs();
+        if (newImage.exists()) {
+            throw new ResourcePathAlreadyExist();
+        }
+        try {
+            newImage.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         FileOutputStream outputStream = new FileOutputStream(newImage);
         outputStream.write(decode);
         outputStream.close();

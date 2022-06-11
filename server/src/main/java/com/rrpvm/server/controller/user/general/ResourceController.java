@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
 
 @RestController
@@ -27,12 +27,12 @@ public class ResourceController {
     @GetMapping(value = "/image/{url}", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE})
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<Resource> image(@PathVariable String url) throws ResourceNotFoundException, ResourceConvertException, ResourceEmptyException {
-        URI uri = null;
+        String uri = null;
         ByteArrayResource inputStream = null;
         try {
-            uri = getClass().getResource("/static/images/" + url).toURI();
+            uri = getClass().getResource("/").getPath().concat("static/images/" + url).substring(1);
             inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(uri)));
-        } catch (URISyntaxException e) {
+        } catch (InvalidPathException e) {
             throw new ResourceNotFoundException();
         } catch (IOException e) {
             throw new ResourceConvertException();

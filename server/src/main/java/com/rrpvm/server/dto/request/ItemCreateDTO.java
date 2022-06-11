@@ -6,7 +6,7 @@ public class ItemCreateDTO {
     private final String itemRarity;
     private final String itemDescription;
     private final Double itemPrice;
-    private final int itemAvailable;
+    private final int itemsAvailable;
 
     public ItemCreateDTO(String itemName, String itemHero, String itemRarity,String itemDescription, Double itemPrice,int itemAvailable) {
         this.itemName = itemName;
@@ -14,7 +14,7 @@ public class ItemCreateDTO {
         this.itemRarity = itemRarity;
         this.itemDescription = itemDescription;
         this.itemPrice = itemPrice;
-        this.itemAvailable = itemAvailable;
+        this.itemsAvailable = itemAvailable;
     }
 
     public String getItemName() {
@@ -33,8 +33,8 @@ public class ItemCreateDTO {
         return itemPrice;
     }
 
-    public int getItemAvailable() {
-        return itemAvailable;
+    public int getItemsAvailable() {
+        return itemsAvailable;
     }
 
     public String getDescription() {

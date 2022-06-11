@@ -16,14 +16,17 @@ import LoadingComponent from '../components/singletons/LoadingComponent';
 export const CatalogView = (): JSX.Element => {
     const sortTypes: SortBarItem[] = [
         new SortBarItem(() => {
-            console.log('amount')
+            sortItemsBy((a: ItemViewDTO, b: ItemViewDTO) => b.itemsAvailable - a.itemsAvailable);
         }, "amount"),
         new SortBarItem(() => {
-            console.log('price')
+            sortItemsBy((a: ItemViewDTO, b: ItemViewDTO) => b.itemPrice - a.itemPrice);
         }, "price"),
         new SortBarItem(() => {
-            console.log('name')
+            sortItemsBy((a: ItemViewDTO, b: ItemViewDTO) => a.itemName.localeCompare(b.itemName));
         }, "name"),
+        new SortBarItem(() => {
+            sortItemsBy((a: ItemViewDTO, b: ItemViewDTO) => b.itemRarity.id - a.itemRarity.id);
+        }, "rarity"),
     ]
     const [searchParams, setSearchParams] = useSearchParams();
     /*<MULTOBOX RARITY DATA>*/
@@ -67,8 +70,14 @@ export const CatalogView = (): JSX.Element => {
         mutable.append('name', itemNameFilter);
         setSearchParams(mutable);
     }
-    const onSuccessItemListFetch = (response: AxiosResponse) => {setItems(response.data);setFetchStatus(response.status);}
-    const onSuccessRarityListFetch = (response: AxiosResponse) => {setRarityList(response.data);setFetchStatus(response.status);}
+    const sortItemsBy = (expression: (a: ItemViewDTO, b: ItemViewDTO) => number) => {
+        if (items.length === 0) return;
+        let copy = [...items];
+        copy.sort(expression);
+        setItems(copy);
+    }
+    const onSuccessItemListFetch = (response: AxiosResponse) => { setItems(response.data); setFetchStatus(response.status); }
+    const onSuccessRarityListFetch = (response: AxiosResponse) => { setRarityList(response.data); setFetchStatus(response.status); }
     const fetchDataFrame = () => (<LoadingComponent></LoadingComponent>);
     const mainFrame = (): JSX.Element => {
         return (

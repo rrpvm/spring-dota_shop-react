@@ -74,7 +74,7 @@ public class ItemSell {
         this.itemHero = vOther.getItemHero();
         this.itemRarity = vOther.getItemRarity();
         this.itemPrice = vOther.getItemPrice();
-        this.itemsAvailable = vOther.getItemAvailable();
+        this.itemsAvailable = vOther.getItemsAvailable();
         this.itemImageURL = itemImageURL;
     }
 

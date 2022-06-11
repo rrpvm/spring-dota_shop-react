@@ -31,7 +31,6 @@ const LoadingComponent: React.FC = () => {
         context.clearRect(0, 0, width, height);
         context.strokeStyle = hslColor;
         context.beginPath();
-        console.log(dwDelta);
         context.arc(width / 2, height / 2, height / 4, -Math.PI/2+dwProgress, dwProgress);
         context.stroke();
         globalTime = performance.now();

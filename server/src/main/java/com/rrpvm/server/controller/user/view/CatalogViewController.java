@@ -36,7 +36,7 @@ public class CatalogViewController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<ItemSell>> getItems(@RequestParam(required = false) String[] rarity, @RequestParam(required = false, name = "name") String nameContains) {
         if (rarity == null) return ResponseEntity.noContent().build();
-        if (nameContains.isEmpty()) nameContains = new String("");
+        if (nameContains == null) nameContains = new String("");
         nameContains = String.format("%%%s%%", nameContains);//%nameContains%
         List<ItemSell> items = itemRepository.findAllByItemRaritiesAndNameContainingIgnoreCase(
                 new ArrayList<>(Arrays.asList(rarity))
