@@ -6,6 +6,7 @@ import { encodeImageFileAsURL } from "../utilities/ImageConverter";
 import ItemCreateDTO from "../model/DTO/request/ItemCreateDTO";
 import FormInput from '../components/singletons/FormInput';
 import { Alert } from '../components/alerts/Alert';
+import { RequestMessageFactory } from '../network/RequestMessageFactory';
 
 export const CreateItemView: React.FC = () => {
     //<form data section start>
@@ -18,7 +19,7 @@ export const CreateItemView: React.FC = () => {
     const [itemImageData, setImageData] = useState<File | null>(null);
     //<form data section end>
     const [imageBase64, setImagePreview] = useState<string>('');//for preview
-    const [formRequestStatus, setRequestStatus] = useState<number>(-1);
+    const [formRequestStatus, setRequestStatus] = useState<AxiosResponse>();
     //
     let bForceClosedAlert = false;
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -32,16 +33,15 @@ export const CreateItemView: React.FC = () => {
             type: "application/json"
         }));
         apiRequests.addItem(formData, { onSuccess: onCreateSuccess, onError: onCreateFailed });
-        console.log(JSON.stringify(newItem));
     };
     const onCreateSuccess = (response: AxiosResponse) => {
         if (response.status === undefined) return;
-        setRequestStatus(response.status);
+        setRequestStatus(response);
         closeAlertMessage(4000);
     }
     const onCreateFailed = (error: AxiosError) => {
         if (error.response === undefined) return;
-        setRequestStatus(error.response?.status);
+        setRequestStatus(error.response);
         closeAlertMessage(2000);
     }
 
@@ -87,7 +87,7 @@ export const CreateItemView: React.FC = () => {
     };
     const closeAlertMessage = (timeout: number) => {
         if (timeout === -1) {
-            setRequestStatus(-1);
+            setRequestStatus(undefined);
             bForceClosedAlert = true;
             setTimeout(() => { bForceClosedAlert = false; }, 4000);
             return;
@@ -96,11 +96,11 @@ export const CreateItemView: React.FC = () => {
             bForceClosedAlert = false;
             return;
         }
-        setTimeout(() => setRequestStatus(-1), timeout);
+        setTimeout(() => setRequestStatus(undefined), timeout);
     }
     return (
         <>
-            <Alert type={formRequestStatus === 200 ? "success" : "failure"} active={formRequestStatus !== -1} closeCallback={closeAlertMessage}>{formRequestStatus === 200 ? "created" : "failure"}</Alert>
+            <Alert type={formRequestStatus?.status === 200 ? "success" : "failure"} active={formRequestStatus !== undefined} closeCallback={closeAlertMessage}>{RequestMessageFactory(formRequestStatus?.status)}</Alert>
             <div className="item-create-block" >
                 <form className="item-create-form" onSubmit={handleSubmit} encType="multipart/form-data">
                     <span>Выберите изображение предмета</span>

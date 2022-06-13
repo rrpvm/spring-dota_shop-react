@@ -53,7 +53,8 @@ public class ItemSell {
                     @JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false, unique = false)
             },
             inverseJoinColumns = {
-                    @JoinColumn(name = "sell_id", referencedColumnName = "log_id", nullable = false, unique = false)
+                    @JoinColumn(name = "consumer_id", referencedColumnName = "consumer_id", nullable = false, unique = false),
+                    @JoinColumn(name = "log_id", referencedColumnName = "log_id", nullable = false, unique = false)
             })
     private List<ItemSoldLog> liquidityLog;
 

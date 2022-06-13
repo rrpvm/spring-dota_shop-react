@@ -13,7 +13,7 @@ function App() {
       <Router>
         <NavigationBar></NavigationBar>
         <Routes >
-          <Route path='/admin' element={<CreateItemView></CreateItemView>}></Route>
+          <Route path='/admin/create' element={<CreateItemView></CreateItemView>}></Route>
           <Route path='/item/:id' element={<ItemPage></ItemPage>}></Route>
           <Route path='/' element={<CatalogView></CatalogView>}></Route>
           <Route path="/*" element={<NotFoundPage></NotFoundPage>}></Route>

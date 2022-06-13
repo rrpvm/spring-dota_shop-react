@@ -12,14 +12,15 @@ public class AppConfig {
     @Bean
     public CommonsMultipartResolver commonsMultipartResolver() {
         final CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-        commonsMultipartResolver.setMaxUploadSize(-1);
+        commonsMultipartResolver.setMaxUploadSize(-1);//no limits (default 1 mb)
         return commonsMultipartResolver;
     }
-
     @Bean
     @Scope("prototype")
     public ReentrantLock createReentrantLock() {
         return new ReentrantLock();
     }
+
+
 
 }

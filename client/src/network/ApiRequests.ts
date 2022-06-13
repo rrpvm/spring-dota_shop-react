@@ -1,4 +1,4 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import  { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { createGetRequest, createPostRequest } from "./RequestFactory";
 import IRequestAttachment from "../interfaces/IRequestAttachment";
 class ApiRequests {
@@ -26,7 +26,7 @@ class ApiRequests {
     public getImageURL(itemImageUrl? : string) : string{
         return this.getResource + "image/" + itemImageUrl;
     }
-    private promiseHandler(promise: Promise<AxiosResponse<any, any>>, attachment: IRequestAttachment) {
+    private promiseHandler(promise: Promise<AxiosResponse<any,any>>, attachment: IRequestAttachment) {
         promise.then((axiosResponse: AxiosResponse) => {
             attachment.onSuccess(axiosResponse);
         }).catch((axiosError: AxiosError) => {

@@ -1,16 +1,7 @@
 package com.rrpvm.server.model.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Column;
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -24,19 +15,27 @@ public class ItemSoldLog {
     private Date soldTime;
     @Column(name = "sold_price")
     private Double soldPrice;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "consumer_id", referencedColumnName = "user_id")
+    private User consumer;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = ItemSell.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     private ItemSell item;
 
-    public ItemSoldLog(Long logId, Date soldTime, Double soldPrice, ItemSell item) {
+    public ItemSoldLog(Long logId, Date soldTime, Double soldPrice, User consumer, ItemSell item) {
         this.logId = logId;
         this.soldTime = soldTime;
         this.soldPrice = soldPrice;
+        this.consumer = consumer;
         this.item = item;
     }
 
     public ItemSoldLog() {
+    }
+
+    public User getConsumer() {
+        return consumer;
     }
 
     public Date getSoldTime() {
