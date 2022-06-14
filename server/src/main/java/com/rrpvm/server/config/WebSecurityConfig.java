@@ -1,6 +1,7 @@
 package com.rrpvm.server.config;
 
 import com.rrpvm.server.security.JwtAuthorizationFilter;
+import com.rrpvm.server.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -17,15 +18,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableConfigurationProperties
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
     @Qualifier("jwtAuthorizationFilter")
     private JwtAuthorizationFilter jwtAuthorizationFilter;
-
     @Override
     public void configure(HttpSecurity web) throws Exception {
         web.authorizeRequests()
-                .antMatchers("/public/**").permitAll()
+                .antMatchers("/public/**","/common/v1/authorization/**").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic().and().csrf().disable().cors()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -35,8 +34,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    @Override
+    @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 }
