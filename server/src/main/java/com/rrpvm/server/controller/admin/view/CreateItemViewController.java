@@ -63,7 +63,10 @@ public class CreateItemViewController {
         // mutex.unlock();
         return ResponseEntity.ok().build();
     }
-
+    @GetMapping("/test")
+    public void test(){
+        System.out.println("test");
+    }
     @ExceptionHandler(value = {NullPointerException.class})
     private ResponseEntity<String> nullpointerDataExceptionHandler(NullPointerException exception) {
         return ResponseEntity.badRequest().body(exception.getMessage());

@@ -24,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity web) throws Exception {
         web.authorizeRequests()
-                .antMatchers("/public/**","/common/v1/authorization/**").permitAll()
+                .antMatchers("/public/**","/common/v1/authorization/*").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic().and().csrf().disable().cors()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);

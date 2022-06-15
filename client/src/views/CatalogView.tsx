@@ -11,6 +11,7 @@ import MultiComboBoxItem from '../model/MultiComboBoxItem';
 import SortBarItem from '../model/SortBarItem';
 import { AxiosResponse } from 'axios';
 import LoadingComponent from '../components/singletons/LoadingComponent';
+import AlternativeLaodPage from './AlternativeLoadPage';
 
 
 export const CatalogView = (): JSX.Element => {
@@ -29,6 +30,7 @@ export const CatalogView = (): JSX.Element => {
         }, "rarity"),
     ]
     const [searchParams, setSearchParams] = useSearchParams();
+    const [bPreload, switchPreload] = useState<boolean>(true);
     /*<MULTOBOX RARITY DATA>*/
     const [rarityOnSelection, setSelectedRarities] = useState<MultiComboBoxItem[]>([]);//selected
     const [rarityList, setRarityList] = useState<RarityInfoDTO[]>([]);//alllist
@@ -47,8 +49,14 @@ export const CatalogView = (): JSX.Element => {
         apiRequests.getItemList(searchParams, { onSuccess: onSuccessItemListFetch })
     }, [searchParams]);//or [rarirityOnSelection]
     useEffect(() => {
+        switchPreload(true);
         setSearchParams({});
-        apiRequests.getRarities({ onSuccess: onSuccessRarityListFetch });
+        apiRequests.getRarities({
+            onSuccess: (response: AxiosResponse) => {
+                onSuccessRarityListFetch(response);
+                setTimeout(() => switchPreload(false), 500);
+            }
+        });
     }, []);
     const onSearchFocused = () => setSearchFocused(true);
     const onSearchBlured = () => setSearchFocused(false);
@@ -121,5 +129,5 @@ export const CatalogView = (): JSX.Element => {
             </div >
         );
     }
-    return (fetchStatus === -1 ? fetchDataFrame() : mainFrame());
+    return (bPreload ? <AlternativeLaodPage></AlternativeLaodPage> : (fetchStatus === -1 ? fetchDataFrame() : mainFrame()));
 };

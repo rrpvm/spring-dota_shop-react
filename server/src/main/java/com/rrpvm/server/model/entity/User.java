@@ -4,7 +4,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.FetchType;
+import javax.persistence.GenerationType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,7 +28,7 @@ public class User implements UserDetails {
     private String username;
     @Column(name = "password")
     private String password;
-    @ElementCollection(targetClass = SimpleGrantedAuthority.class, fetch = FetchType.LAZY)
+    @ElementCollection(targetClass = SimpleGrantedAuthority.class, fetch = FetchType.EAGER)
     @Column(name = "authorities")
     private Collection<SimpleGrantedAuthority> authorities;
 

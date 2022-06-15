@@ -5,6 +5,7 @@ import com.rrpvm.server.dto.request.UserAuthorizationDTO;
 import com.rrpvm.server.exception.common.InvalidAuthorizationDataException;
 import com.rrpvm.server.exception.common.UserAlreadyExistException;
 import com.rrpvm.server.model.entity.User;
+import com.rrpvm.server.service.JwtService;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,10 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/common/v1/authorization")
@@ -34,9 +32,11 @@ public class AuthorizationController {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtService jwtService;
 
     @PostMapping("/authorize")
-    public ResponseEntity<Map<String, String>> authorize(@RequestBody UserAuthorizationDTO authenticationRequest) throws
+    public ResponseEntity<String> authorize(@RequestBody UserAuthorizationDTO authenticationRequest) throws
             org.springframework.security.core.AuthenticationException,
             org.springframework.http.converter.HttpMessageNotReadableException,
             InvalidAuthorizationDataException {
@@ -46,11 +46,7 @@ public class AuthorizationController {
             throw new InvalidAuthorizationDataException();
         SecurityContext securityContextHolder = SecurityContextHolder.getContext();
         securityContextHolder.setAuthentication(authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())));
-
-
-        Map<String, String> response = new HashMap<>();
-        response.put("token", "1337");
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(jwtService.generateToken(authenticationRequest));
     }
 
     @PostMapping("/registration")
@@ -63,16 +59,7 @@ public class AuthorizationController {
         }
         User user = new User(registrationData.getUsername(), passwordEncoder.encode(registrationData.getPassword()), "USER");
         userRepository.save(user);
-        Map<String, Object> tokenData = new HashMap<>();
-        tokenData.put("username", registrationData.getUsername());
-        tokenData.put("password", registrationData.getPassword());
-        JwtBuilder jwtBuilder = Jwts.builder();
-        Calendar calendar = new GregorianCalendar();
-        jwtBuilder.setExpiration(calendar.getTime());
-        jwtBuilder.setClaims(tokenData);
-        String key = "abc123";
-        String token = jwtBuilder.signWith(SignatureAlgorithm.HS512, key).compact();
-        return ResponseEntity.ok().body(token);
+        return ResponseEntity.ok().body(jwtService.generateToken(registrationData));
     }
 
     @ExceptionHandler({org.springframework.security.core.AuthenticationException.class})
