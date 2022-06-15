@@ -22,7 +22,10 @@ const ItemPage: React.FC = () => {
         else setItemData(response.data);
     }
     const onErrorFetch = (error: AxiosError) => {
-        onNotElementFound()
+        if (error.message === 'Network Error') {
+            navigate('/error_page/500');
+        }
+        else onNotElementFound()
     }
     const onLoad = () => {
         if (urlParams.id === undefined) return onNotElementFound();

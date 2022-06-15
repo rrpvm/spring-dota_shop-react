@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { CatalogView } from './views/CatalogView';
 import { NavigationBar } from './components/singletons/NavBar';
 import { CreateItemView } from './views/CreateItemView';
-import NotFoundPage from './views/NotFoundPage';
+import ErrorPage from './views/ErrorPage';
 import ItemPage from './views/ItemPage';
 import { StrictMode } from 'react';
 function App() {
@@ -13,10 +13,11 @@ function App() {
       <Router>
         <NavigationBar></NavigationBar>
         <Routes >
+          <Route path="/*" element={<ErrorPage></ErrorPage>}></Route>
           <Route path='/admin/create' element={<CreateItemView></CreateItemView>}></Route>
           <Route path='/item/:id' element={<ItemPage></ItemPage>}></Route>
           <Route path='/' element={<CatalogView></CatalogView>}></Route>
-          <Route path="/*" element={<NotFoundPage></NotFoundPage>}></Route>
+          <Route path="/error_page/:error" element={<ErrorPage></ErrorPage>}></Route>
         </Routes>
       </Router>
     </StrictMode>

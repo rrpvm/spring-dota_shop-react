@@ -1,6 +1,6 @@
 import '../styles/views/catalog.css'
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { MultiComboBox } from "../components/comboboxes/MultiComboBox";
 import { SortBar } from '../components/bars/SortBar';
 import { apiRequests } from '../network/ApiRequests';
@@ -9,7 +9,7 @@ import ItemPreview from '../components/singletons/ItemPreview';
 import RarityInfoDTO from "../model/DTO/RarityInfoDTO";
 import MultiComboBoxItem from '../model/MultiComboBoxItem';
 import SortBarItem from '../model/SortBarItem';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import LoadingComponent from '../components/singletons/LoadingComponent';
 import AlternativeLaodPage from './AlternativeLoadPage';
 
@@ -28,7 +28,8 @@ export const CatalogView = (): JSX.Element => {
         new SortBarItem(() => {
             sortItemsBy((a: ItemViewDTO, b: ItemViewDTO) => b.itemRarity.id - a.itemRarity.id);
         }, "rarity"),
-    ]
+    ];
+    const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [bPreload, switchPreload] = useState<boolean>(true);
     /*<MULTOBOX RARITY DATA>*/
@@ -54,7 +55,10 @@ export const CatalogView = (): JSX.Element => {
         apiRequests.getRarities({
             onSuccess: (response: AxiosResponse) => {
                 onSuccessRarityListFetch(response);
-                setTimeout(() => switchPreload(false), 500);
+                setTimeout(() => switchPreload(false), 1000);
+            },
+            onError: (error: AxiosError) => {
+                navigate("/error_page/500");
             }
         });
     }, []);

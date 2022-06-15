@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import '../styles/views/404.css'
-const NotFoundPage: React.FC = () => {
+const ErrorPage: React.FC = () => {
+    const params = useParams();
     let width = window.innerWidth;
     let height = window.innerHeight;
     const precision = 150;//also is speed
@@ -35,7 +37,7 @@ const NotFoundPage: React.FC = () => {
         const fontSize = Math.min(width, height) / 2;
         ctx.font = `${fontSize}px Arial`;
         ctx.textAlign = 'center';
-        ctx.fillText('404', width / 2, height / 2 + fontSize / 4);
+        ctx.fillText(params.error === undefined ? '404' : params.error, width / 2, height / 2 + fontSize / 4);
         const data = ctx.getImageData(0, 0, width, height).data;
         const data32 = new Uint32Array(data.buffer);
         for (let x = 0; x < width; x += 15) {
@@ -88,4 +90,4 @@ const NotFoundPage: React.FC = () => {
         </canvas>
     );
 }
-export default NotFoundPage;
+export default ErrorPage;
