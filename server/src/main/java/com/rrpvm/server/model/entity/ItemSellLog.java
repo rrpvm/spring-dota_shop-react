@@ -49,4 +49,5 @@ public class ItemSellLog {
     public ItemSell getItem() {
         return item;
     }
+
 }

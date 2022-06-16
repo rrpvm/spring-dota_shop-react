@@ -4,6 +4,7 @@ import com.rrpvm.server.dao.repository.UserRepository;
 import com.rrpvm.server.dto.request.UserAuthorizationDTO;
 import com.rrpvm.server.exception.ipublic.InvalidAuthorizationDataException;
 import com.rrpvm.server.exception.ipublic.UserAlreadyExistException;
+import com.rrpvm.server.model.entity.Cart;
 import com.rrpvm.server.model.entity.User;
 import com.rrpvm.server.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class AuthorizationController {
             throw new UserAlreadyExistException();
         }
 
-        User user = new User(registrationData.getUsername(), passwordEncoder.encode(registrationData.getPassword()), "USER", new ArrayList<>());
+        User user = new User(registrationData.getUsername(), passwordEncoder.encode(registrationData.getPassword()), "USER", new ArrayList<>(), new Cart());
         userRepository.save(user);
         return ResponseEntity.ok().
                 body(jwtService.generateToken(registrationData));

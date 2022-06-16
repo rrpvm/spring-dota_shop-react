@@ -19,7 +19,7 @@ import com.rrpvm.server.dto.request.ItemCreateDTO;
 
 import java.util.List;
 
-
+//missed dependency : @OneToOne from CartItem to itemSell. We don't need know about cart at item
 @Entity
 @Table(name = "items_list")
 public class ItemSell {

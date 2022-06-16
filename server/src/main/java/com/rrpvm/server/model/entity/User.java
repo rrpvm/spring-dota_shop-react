@@ -37,14 +37,17 @@ public class User implements UserDetails {
 
             })
     private List<LogRecord> buyLogs;
+    @OneToOne
+    @JoinColumn(referencedColumnName = "cart_id", name = "cart_id")
+    private Cart cart;
 
-    public User(String username, String password, String role, List<LogRecord> logRecords) {
+    public User(String username, String password, String role, List<LogRecord> buyLogs, Cart cart) {
         this.username = username;
         this.password = password;
-        List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority(role));
-        this.authorities = authorities;
-        this.buyLogs = logRecords;
+        this.authorities = new ArrayList<SimpleGrantedAuthority>();
+        this.authorities.add(new SimpleGrantedAuthority(role));
+        this.buyLogs = buyLogs;
+        this.cart = cart;
     }
 
     public User() {
@@ -112,5 +115,13 @@ public class User implements UserDetails {
 
     public void setBuyLogs(List<LogRecord> buyLogs) {
         this.buyLogs = buyLogs;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }
