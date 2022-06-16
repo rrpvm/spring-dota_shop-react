@@ -22,12 +22,12 @@ public class PublicItemLogController {
     @Autowired
     private ItemSellRepository itemSellRepository;
 
-    @GetMapping("/log/list")//get all logs
+    @GetMapping("/log/all")//get all logs
     public ResponseEntity<List<ItemSellLog>> getLogs() {
         return ResponseEntity.ok(itemLogRepository.findAll());
     }
 
-    @GetMapping("/log/list")//get all logs
+    @GetMapping("/item/log")//get all logs
     public ResponseEntity<List<ItemSellLog>> getLogsOfItem(@RequestParam(name = "item_id") Long itemId) {
         if (itemId == null) {
             ResponseEntity.badRequest().body("item id missing");
