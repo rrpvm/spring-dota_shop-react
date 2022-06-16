@@ -17,6 +17,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 
 @RestController
 @RequestMapping("/public/v1/authorization")
@@ -58,7 +60,7 @@ public class AuthorizationController {
             throw new UserAlreadyExistException();
         }
 
-        User user = new User(registrationData.getUsername(), passwordEncoder.encode(registrationData.getPassword()), "USER");
+        User user = new User(registrationData.getUsername(), passwordEncoder.encode(registrationData.getPassword()), "USER", new ArrayList<>());
         userRepository.save(user);
         return ResponseEntity.ok().
                 body(jwtService.generateToken(registrationData));

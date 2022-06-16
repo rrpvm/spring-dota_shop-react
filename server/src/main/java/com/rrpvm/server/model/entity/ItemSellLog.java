@@ -16,7 +16,7 @@ public class ItemSellLog {
     @Column(name = "sold_price")
     private Double soldPrice;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "consumer_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User consumer;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = ItemSell.class, cascade = CascadeType.ALL)

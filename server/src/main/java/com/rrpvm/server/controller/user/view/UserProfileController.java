@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/user/v1/profile")
 @CrossOrigin("http://localhost:3000")
-public class UserController {
+public class UserProfileController {
     @Autowired
     private UserRepository userRepository;
 
@@ -56,8 +57,10 @@ public class UserController {
         if (maybeExistingUser != null) {
             throw new UserAlreadyExistException();
         }
+        User currentUser = userRepository.findById(user.getId()).get();
+        currentUser.setUsername(new_user.getUsername());
         user.setUsername(new_user.getUsername());
-        userRepository.save(user);
+        userRepository.save(currentUser);
         return ResponseEntity.ok(true);
     }
 }

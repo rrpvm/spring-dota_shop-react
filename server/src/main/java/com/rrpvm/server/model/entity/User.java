@@ -5,19 +5,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GenerationType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.CollectionTable;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.LogRecord;
 
 @Entity
 @Table(name = "users")
@@ -35,13 +27,24 @@ public class User implements UserDetails {
     @Column(name = "authorities")
     private Collection<SimpleGrantedAuthority> authorities;
 
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = ItemSellLog.class)
+    @JoinTable(name = "user_buy_logs",
+            joinColumns = {
+                    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false, unique = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "log_id", referencedColumnName = "log_id", nullable = false, unique = false),
 
-    public User(String username, String password, String role) {
+            })
+    private List<LogRecord> buyLogs;
+
+    public User(String username, String password, String role, List<LogRecord> logRecords) {
         this.username = username;
         this.password = password;
         List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority(role));
         this.authorities = authorities;
+        this.buyLogs = logRecords;
     }
 
     public User() {
@@ -101,5 +104,13 @@ public class User implements UserDetails {
 
     public void setAuthorities(Collection<SimpleGrantedAuthority> authorities) {
         this.authorities = authorities;
+    }
+
+    public List<LogRecord> getBuyLogs() {
+        return buyLogs;
+    }
+
+    public void setBuyLogs(List<LogRecord> buyLogs) {
+        this.buyLogs = buyLogs;
     }
 }
