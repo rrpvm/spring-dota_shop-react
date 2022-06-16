@@ -24,7 +24,7 @@ import java.util.ArrayList;
 @RestController
 @RequestMapping("/public/v1/authorization")
 @CrossOrigin("http://localhost:3000")
-public class AuthorizationController {
+public class PublicAuthorizationController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired

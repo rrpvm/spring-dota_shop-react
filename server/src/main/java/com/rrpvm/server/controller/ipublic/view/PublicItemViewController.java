@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("public/v1/item")
 @CrossOrigin("http://localhost:3000")
-public class ItemViewController {
+public class PublicItemViewController {
     @Autowired
     private ItemSellRepository itemSellRepository;
     @GetMapping("/")

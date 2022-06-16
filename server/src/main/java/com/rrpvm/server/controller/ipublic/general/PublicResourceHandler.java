@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 @RestController
 @RequestMapping("/public/v1/resources")
 @CrossOrigin("http://localhost:3000")
-public class ResourceHandler {
+public class PublicResourceHandler {
     @GetMapping(value = "/image/{url}", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE})
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<Resource> image(@PathVariable String url) throws ResourceNotFoundException, ResourceConvertException, ResourceEmptyException {

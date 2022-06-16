@@ -27,11 +27,11 @@ import java.util.concurrent.locks.ReentrantLock;
 @RestController
 @RequestMapping("/admin/v1/create")
 @CrossOrigin(origins = "http://localhost:3000")
-public class CreateItemViewController {
+public class AdminCreateItemViewController {
     private final ItemSellRepository itemRepository;
     private final ReentrantLock mutex;
 
-    public CreateItemViewController(ItemSellRepository itemRepository, ReentrantLock mutex) {
+    public AdminCreateItemViewController(ItemSellRepository itemRepository, ReentrantLock mutex) {
         this.itemRepository = itemRepository;
         this.mutex = mutex;
     }

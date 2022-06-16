@@ -14,7 +14,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/public/v1/access")
 @CrossOrigin(origins = "http://localhost:3000")
-public class AccessTester {
+public class PublicAccessTester {
     @GetMapping("hasAccess")
     public Map<Object, Object> test(@AuthenticationPrincipal User user) {
         Map<Object, Object> response = new HashMap<>();

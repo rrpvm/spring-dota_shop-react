@@ -1,6 +1,5 @@
 package com.rrpvm.server.controller.ipublic.view;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,10 +24,10 @@ import com.rrpvm.server.model.entity.ItemSell;
 @RestController
 @RequestMapping("public/v1/catalog")
 @CrossOrigin("http://localhost:3000")
-public class CatalogViewController {
+public class PublicCatalogViewController {
     private final ItemSellRepository itemRepository;
 
-    CatalogViewController(ItemSellRepository itemSellRepository) {
+    PublicCatalogViewController(ItemSellRepository itemSellRepository) {
         this.itemRepository = itemSellRepository;
     }
 
