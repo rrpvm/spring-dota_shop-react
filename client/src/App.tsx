@@ -1,13 +1,13 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { CatalogView } from './views/CatalogView';
-import { NavigationBar } from './components/singletons/NavBar';
-import { CreateItemView } from './views/CreateItemView';
+import { CatalogView } from './view/user/CatalogView';
+import { NavigationBar } from './component/singletons/NavBar';
+import { CreateItemView } from './view/admin/CreateItemView';
 import { StrictMode } from 'react';
-import ErrorView from './views/ErrorView';
-import ItemView from './views/ItemView';
-import AuthorizationView from './views/AuthorizationView';
+import ErrorView from './view/ErrorView';
+import ItemView from './view/user/ItemView';
+import AuthorizationView from './view/AuthorizationView';
 function App() {
   return (
     <StrictMode>
