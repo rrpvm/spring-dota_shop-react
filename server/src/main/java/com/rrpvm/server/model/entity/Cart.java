@@ -1,6 +1,17 @@
 package com.rrpvm.server.model.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 import java.util.List;
 
 @Entity
@@ -19,8 +30,8 @@ public class Cart {
                     @JoinColumn(name = "cart_item_id", referencedColumnName = "cart_item_id", nullable = false, unique = false),
 
             })
-    private List<CartItem>items;
-    @OneToOne
+    private List<CartItem> items;
+    @OneToOne(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "user_id", name = "user_id")
     private User user;
 

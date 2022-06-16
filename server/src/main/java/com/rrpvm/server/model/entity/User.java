@@ -37,7 +37,7 @@ public class User implements UserDetails {
 
             })
     private List<LogRecord> buyLogs;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(referencedColumnName = "cart_id", name = "cart_id")
     private Cart cart;
 
