@@ -2,8 +2,8 @@ package com.rrpvm.server.controller.ipublic.view;
 
 import com.rrpvm.server.dao.repository.UserRepository;
 import com.rrpvm.server.dto.request.UserAuthorizationDTO;
-import com.rrpvm.server.exception.common.InvalidAuthorizationDataException;
-import com.rrpvm.server.exception.common.UserAlreadyExistException;
+import com.rrpvm.server.exception.ipublic.InvalidAuthorizationDataException;
+import com.rrpvm.server.exception.ipublic.UserAlreadyExistException;
 import com.rrpvm.server.model.entity.User;
 import com.rrpvm.server.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +15,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -54,23 +47,38 @@ public class AuthorizationController {
 
     @PostMapping("/registration")
     public ResponseEntity<String> registration(@RequestBody UserAuthorizationDTO registrationData) throws InvalidAuthorizationDataException, UserAlreadyExistException {
-        if (registrationData.getUsername() == null || registrationData.getPassword() == null) {
+        if (registrationData.getUsername() == null ||
+                registrationData.getPassword() == null ||
+                registrationData.getUsername().trim().length() < 4 ||
+                registrationData.getPassword().trim().length() < 8
+        ) {
             throw new InvalidAuthorizationDataException();
         }
         if (userRepository.findUserByUsername(registrationData.getUsername()) != null) {
             throw new UserAlreadyExistException();
         }
+
         User user = new User(registrationData.getUsername(), passwordEncoder.encode(registrationData.getPassword()), "USER");
         userRepository.save(user);
-        return ResponseEntity.ok().body(jwtService.generateToken(registrationData));
+        return ResponseEntity.ok().
+                body(jwtService.generateToken(registrationData));
     }
+
+    @PutMapping("/logout")
+    public void logout() {
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            SecurityContextHolder.getContext().setAuthentication(null);
+        }
+    }
+
     @GetMapping("/validate")
-    public boolean validateAuthorization(){
+    public boolean validateAuthorization() {
         return SecurityContextHolder.getContext().getAuthentication() != null;
     }
+
     @ExceptionHandler({org.springframework.security.core.AuthenticationException.class})
     private ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
-       // System.out.println(e.getMessage());
+        // System.out.println(e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 

@@ -1,8 +1,8 @@
 package com.rrpvm.server.controller.ipublic.general;
 
-import com.rrpvm.server.exception.user.ResourceConvertException;
-import com.rrpvm.server.exception.user.ResourceEmptyException;
-import com.rrpvm.server.exception.user.ResourceNotFoundException;
+import com.rrpvm.server.exception.ipublic.ResourceConvertException;
+import com.rrpvm.server.exception.ipublic.ResourceEmptyException;
+import com.rrpvm.server.exception.ipublic.ResourceNotFoundException;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 @RestController
 @RequestMapping("/public/v1/resources")
 @CrossOrigin("http://localhost:3000")
-public class ResourceController {
+public class ResourceHandler {
     @GetMapping(value = "/image/{url}", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE})
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<Resource> image(@PathVariable String url) throws ResourceNotFoundException, ResourceConvertException, ResourceEmptyException {

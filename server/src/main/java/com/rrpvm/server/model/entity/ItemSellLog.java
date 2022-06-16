@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "item_sell_log")
-public class ItemSoldLog {
+public class ItemSellLog {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "log_id")
@@ -23,7 +23,7 @@ public class ItemSoldLog {
     @JoinColumn(name = "item_id", referencedColumnName = "item_id")
     private ItemSell item;
 
-    public ItemSoldLog(Long logId, Date soldTime, Double soldPrice, User consumer, ItemSell item) {
+    public ItemSellLog(Long logId, Date soldTime, Double soldPrice, User consumer, ItemSell item) {
         this.logId = logId;
         this.soldTime = soldTime;
         this.soldPrice = soldPrice;
@@ -31,7 +31,7 @@ public class ItemSoldLog {
         this.item = item;
     }
 
-    public ItemSoldLog() {
+    public ItemSellLog() {
     }
 
     public User getConsumer() {

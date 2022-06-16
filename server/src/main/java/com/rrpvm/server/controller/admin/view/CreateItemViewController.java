@@ -2,7 +2,7 @@ package com.rrpvm.server.controller.admin.view;
 
 import com.rrpvm.server.dto.request.ItemCreateDTO;
 import com.rrpvm.server.exception.admin.ItemAlreadyExistException;
-import com.rrpvm.server.exception.user.ResourcePathAlreadyExist;
+import com.rrpvm.server.exception.ipublic.ResourcePathAlreadyExist;
 import com.rrpvm.server.model.entity.ItemSell;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

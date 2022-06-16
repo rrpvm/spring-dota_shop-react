@@ -8,11 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.persistence.GenerationType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.CollectionTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
-import javax.persistence.GenerationType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,6 +31,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
     @ElementCollection(targetClass = SimpleGrantedAuthority.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "users_authorities", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"))
     @Column(name = "authorities")
     private Collection<SimpleGrantedAuthority> authorities;
 

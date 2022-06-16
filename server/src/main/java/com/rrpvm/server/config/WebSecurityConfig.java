@@ -29,7 +29,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/public/**", "/common/v1/authorization/*").permitAll()
                 .antMatchers("/user/**").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .anyRequest().authenticated()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .logout().logoutUrl("public/v1/authorization/logout")
                 .and().httpBasic().and().csrf().disable().cors()
                 .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(authenticationJwtUnauthorizedEntryPoint);

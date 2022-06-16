@@ -19,6 +19,13 @@ class PublicApiRequests {
         const promise = postRequest('http://localhost:8080/public/v1/authorization/authorize').post('', data, config);
         promiseHandler(promise, attachment);
     }
+    public signUp(data: UserAuthDTO, attachment: IRequestAttachment, config?: AxiosRequestConfig) {
+        const promise = postRequest('http://localhost:8080/public/v1/authorization/registration').post('', data, config);
+        promiseHandler(promise, attachment);
+    }
+    public logOut() {
+        postRequest('http://localhost:8080/public/v1/authorization/logout').put('');
+    }
     public testAuthorization = (attachment: IRequestAttachment) => {
         const promise = getRequest('http://localhost:8080/public/v1/access').get('hasAccess');
         promiseHandler(promise, attachment);

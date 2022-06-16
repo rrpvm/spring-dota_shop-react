@@ -47,7 +47,7 @@ public class ItemSell {
     private int itemsAvailable;
     @Column(name = "item_image", nullable = false)
     private String itemImageURL;
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = ItemSoldLog.class)
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = ItemSellLog.class)
     @JoinTable(name = "items_sell_history",
             joinColumns = {
                     @JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false, unique = false)
@@ -56,9 +56,9 @@ public class ItemSell {
                     @JoinColumn(name = "consumer_id", referencedColumnName = "consumer_id", nullable = false, unique = false),
                     @JoinColumn(name = "log_id", referencedColumnName = "log_id", nullable = false, unique = false)
             })
-    private List<ItemSoldLog> liquidityLog;
+    private List<ItemSellLog> liquidityLog;
 
-    public ItemSell(@NotNull String itemName, @NotNull String itemHero, @NotNull String itemRarity, @NotNull String itemDescription, @NotNull String itemImageURL, double itemPrice, int itemsAvailable, List<ItemSoldLog> logs) {
+    public ItemSell(@NotNull String itemName, @NotNull String itemHero, @NotNull String itemRarity, @NotNull String itemDescription, @NotNull String itemImageURL, double itemPrice, int itemsAvailable, List<ItemSellLog> logs) {
         this.itemName = itemName;
         this.itemHero = itemHero;
         this.itemRarity = itemRarity;
@@ -147,11 +147,11 @@ public class ItemSell {
         this.itemDescription = itemDescription;
     }
 
-    public List<ItemSoldLog> getLiquidityLog() {
+    public List<ItemSellLog> getLiquidityLog() {
         return liquidityLog;
     }
 
-    public void setLiquidityLog(List<ItemSoldLog> liquidityLog) {
+    public void setLiquidityLog(List<ItemSellLog> liquidityLog) {
         this.liquidityLog = liquidityLog;
     }
 }

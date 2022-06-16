@@ -29,4 +29,9 @@ const postRequest = (url: string) => {
 const getImageURL = (itemImageUrl?: string): string => {
     return getResource + "image/" + itemImageUrl;
 }
-export { promiseHandler, catchHandler, getImageURL, getRequest, postRequest };
+const getRole = async () => {
+    const state = store.getState();
+    return await createGetRequest('http://localhost:8080/public/v1/access/hasAccess', state.jwtToken).get('');
+}
+
+export { promiseHandler, catchHandler, getImageURL, getRole, getRequest, postRequest };

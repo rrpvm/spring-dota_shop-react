@@ -1,4 +1,4 @@
-package com.rrpvm.server.exception.common;
+package com.rrpvm.server.exception.ipublic;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
