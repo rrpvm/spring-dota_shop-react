@@ -104,7 +104,7 @@ export const CreateItemView: React.FC = () => {
     const onDidMount = () => {
         publicApiRequests.testAuthorization({
             onSuccess: (response: AxiosResponse) => {
-                if (response.data !== "ADMIN_ROLE") {
+                if (response.data.role[0].authority !== "ADMIN") {
                     navigate('/authorization')
                 }
             },
