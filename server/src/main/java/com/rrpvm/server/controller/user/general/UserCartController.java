@@ -1,5 +1,6 @@
 package com.rrpvm.server.controller.user.general;
 
+import com.rrpvm.server.dao.repository.CartItemRepository;
 import com.rrpvm.server.dao.repository.ItemSellRepository;
 import com.rrpvm.server.dao.repository.UserRepository;
 import com.rrpvm.server.exception.user.UserDataInvalidException;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Date;
 import java.util.List;
@@ -31,8 +33,60 @@ public class UserCartController {
     private UserRepository userRepository;
     @Autowired
     private ItemSellRepository itemRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
 
-    @PutMapping("/cart_item")//получение своего профиля
+    @GetMapping("/cart")
+    public ResponseEntity<Cart> getCart(@AuthenticationPrincipal User user)
+            throws UserDataInvalidException, UserDoesNotExistException {
+        if (user == null) {
+            throw new UserDataInvalidException();
+        }
+        User dbUser = userRepository.findById(user.getId()).get();
+        if (dbUser == null) {
+            throw new UserDoesNotExistException();
+        }
+        return ResponseEntity.ok(dbUser.getCart());
+    }
+
+    //return always only enabled
+    @GetMapping("/cart/item/list")
+    public ResponseEntity<List<CartItem>> getCartItems(@AuthenticationPrincipal User user)
+            throws UserDataInvalidException, UserDoesNotExistException {
+        if (user == null) {
+            throw new UserDataInvalidException();
+        }
+        User dbUser = userRepository.findById(user.getId()).get();
+        if (dbUser == null) {
+            throw new UserDoesNotExistException();
+        }
+        return ResponseEntity.ok(
+                dbUser.getCart().getItems()
+                        .stream()
+                        .filter(item -> !item.isDeleted())
+                        .collect(Collectors.toList())
+        );
+    }
+
+    @GetMapping("/cart/item")
+    public ResponseEntity<CartItem> getCartItem(@AuthenticationPrincipal User user,
+                                                @RequestParam(name = "cart_item_id") Long cartItemId)
+            throws UserDataInvalidException, UserDoesNotExistException {
+        if (user == null) {
+            throw new UserDataInvalidException();
+        }
+        User dbUser = userRepository.findById(user.getId()).get();
+        if (dbUser == null) {
+            throw new UserDoesNotExistException();
+        }
+        CartItem result = cartItemRepository.findById(cartItemId).get();
+        if (result == null) {
+            ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @PutMapping("/cart_item")
     public ResponseEntity<User> addItemToCard(@AuthenticationPrincipal User user, @RequestBody Long itemId)
             throws UserDoesNotExistException, UserDataInvalidException {
         if (user == null) {
@@ -52,7 +106,7 @@ public class UserCartController {
         return ResponseEntity.ok(dbUser);
     }
 
-    @DeleteMapping("/cart_item")//получение своего профиля
+    @DeleteMapping("/cart_item")
     public ResponseEntity deleteItemFromCart(@AuthenticationPrincipal User user, @RequestParam(name = "id", required = true) Long itemId)
             throws UserDoesNotExistException, UserDataInvalidException {
         if (user == null || itemId == null) {
@@ -63,7 +117,32 @@ public class UserCartController {
             throw new UserDoesNotExistException();
         }
         Cart oldCart = dbUser.getCart();
-        List<CartItem> oldItems = oldCart.getItems().stream().filter(item -> item.getId() != itemId).collect(Collectors.toList());
+        List<CartItem> oldItems = oldCart.getItems();
+        oldItems.forEach(item_m -> {
+            if (item_m.getId() == itemId)
+                item_m.setDeleted(true);
+        });
+        oldCart.setItems(oldItems);
+        dbUser.setCart(oldCart);
+        userRepository.save(dbUser);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/cart/clear")
+    public ResponseEntity clearCart(@AuthenticationPrincipal User user)
+            throws UserDataInvalidException, UserDoesNotExistException {
+        if (user == null) {
+            throw new UserDataInvalidException();
+        }
+        User dbUser = userRepository.findById(user.getId()).get();
+        if (dbUser == null) {
+            throw new UserDoesNotExistException();
+        }
+        Cart oldCart = dbUser.getCart();
+        List<CartItem> oldItems = oldCart.getItems();
+        oldItems.forEach(item_m -> {
+            item_m.setDeleted(true);
+        });
         oldCart.setItems(oldItems);
         dbUser.setCart(oldCart);
         userRepository.save(dbUser);
