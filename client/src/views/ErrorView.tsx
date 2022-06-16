@@ -1,13 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/views/404.css'
-const ErrorPage: React.FC = () => {
+const ErrorView: React.FC = () => {
     const params = useParams();
-    let width = window.innerWidth;
-    let height = window.innerHeight;
     const precision = 150;//also is speed
     const canvas = useRef<HTMLCanvasElement | null>(null);
+    let width = window.innerWidth;
+    let height = window.innerHeight;
     let context: CanvasRenderingContext2D | null = (null);
     let particles: { x: number, y: number }[] = [];
     let time: number = 0;
@@ -17,6 +18,9 @@ const ErrorPage: React.FC = () => {
     let sinTable: number[] = [];
     let cosTable: number[] = [];
     useEffect(() => {
+        sinTable = [];
+        cosTable = [];
+        context = null;
         if (canvas === null) return;
         if (canvas.current === null) return;
         context = canvas.current.getContext('2d');
@@ -90,4 +94,4 @@ const ErrorPage: React.FC = () => {
         </canvas>
     );
 }
-export default ErrorPage;
+export default ErrorView;

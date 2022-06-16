@@ -13,13 +13,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.function.Function;
 
 @Component
-public class JwtService {
+public class JwtService implements Serializable {
     private Clock clock = DefaultClock.INSTANCE;
     @Value("${rrpvm.jwt.key}")
     private String generateKey;
@@ -27,19 +28,15 @@ public class JwtService {
     private Long expiration;
 
     public String generateToken(UserAuthorizationDTO user) {
-        final JwtBuilder jwtBuilder = Jwts.builder();
         final Date createdDate = clock.now();
-        Map<String, Object> tokenData = new HashMap<>();
-        jwtBuilder.setIssuedAt(createdDate);
-        jwtBuilder.setExpiration(calculateExpirationDate(createdDate));
-        jwtBuilder.setClaims(tokenData);
-        jwtBuilder.setSubject(user.getUsername());
-        return jwtBuilder.signWith(SignatureAlgorithm.HS512, generateKey).compact();
+        final Date expiration = calculateExpirationDate(createdDate);
+        Map<String, Object> claims = new HashMap<>();
+        return Jwts.builder().setClaims(claims).setSubject(user.getUsername()).setIssuedAt(createdDate)
+                .setExpiration(expiration).signWith(SignatureAlgorithm.HS512, generateKey).compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public Boolean validateToken(String token) {
+        return !isTokenExpired(token);
     }
 
     private Date calculateExpirationDate(Date createdDate) {

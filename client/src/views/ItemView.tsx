@@ -7,13 +7,14 @@ import { apiRequests } from '../network/ApiRequests';
 import ItemViewDTO from "../model/DTO/response/ItemViewDTO";
 import LoadingComponent from '../components/singletons/LoadingComponent';
 
-const ItemPage: React.FC = () => {
+const ItemView: React.FC = () => {
     const navigate = useNavigate();
     const urlParams = useParams();
     const [itemData, setItemData] = useState<ItemViewDTO>();
     const [fetchStatus, setFetchStatus] = useState<number>(-1);
     useEffect(() => {
         onLoad();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const onNotElementFound = () => navigate('/404page');
     const onSuccessFetch = (response: AxiosResponse) => {
@@ -68,4 +69,4 @@ const ItemPage: React.FC = () => {
     }
     return (fetchStatus === -1 ? fetchDataFrame() : mainFrame());
 }
-export default ItemPage;
+export default ItemView;

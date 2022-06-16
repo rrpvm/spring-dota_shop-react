@@ -3,7 +3,7 @@ package com.rrpvm.server.security;
 import com.rrpvm.server.dao.repository.UserRepository;
 
 import com.rrpvm.server.service.JwtService;
-import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,11 +12,13 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @Component("jwtAuthorizationFilter")
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -24,43 +26,59 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
     @Autowired
     private UserRepository userRepository;
+    private int prefixLength = "Bearer ".length();
+
+    private Optional<String> requestValidate(HttpServletRequest request) {
+        final String requestHeader = request.getHeader("Authorization");
+        if (requestHeader == null || requestHeader.isEmpty() || requestHeader.length() < prefixLength) {
+            return Optional.empty();
+        }
+        String token = null;
+        token = requestHeader.substring(prefixLength);
+        return Optional.of(token);
+    }
+
+    private Optional<UserDetails> jwtValidate(String jwt) {
+        String username = null;
+        try {
+            username = jwtService.getUsernameFromToken(jwt);
+        } catch (Exception exception) {
+            return Optional.empty();
+        }
+        if (username.isEmpty()) {
+            return Optional.empty();
+        }
+        UserDetails userDetails = this.userRepository.findUserByUsername(username);
+        if (userDetails == null) return Optional.empty();
+        try {
+            if (!jwtService.validateToken(jwt)) return Optional.empty();
+        } catch (NullPointerException urlException) {
+            return Optional.empty();
+        }
+        return Optional.of(userDetails);
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        final String requestHeader = request.getHeader("Authorization");
-        if (requestHeader == null || requestHeader.length() < "Bearer ".length()) {//incorrect
-            filterChain.doFilter(request, response);
-            return;
-        }
-        String token = null;
-        String username = null;
-        token = requestHeader.substring("Bearer ".length());
-        try {
-            username = jwtService.getUsernameFromToken(token);
-        } catch (MalformedJwtException | io.jsonwebtoken.SignatureException exception) {//incorrect
-            filterChain.doFilter(request, response);
-            return;
-        }
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userRepository.findUserByUsername(username);
-            if (userDetails != null) {
-                try {
-                    if (jwtService.validateToken(token, userDetails)) {
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                    } else {
-                        SecurityContextHolder.getContext().setAuthentication(null);
-                    }
-                } catch (NullPointerException urlException) {//found authorization header in permit all path
-                    filterChain.doFilter(request, response);
-                    return;
-                }
+            throws ServletException, IOException, ExpiredJwtException {
+        Optional<String> jwtToken = requestValidate((request));
+        if (!jwtToken.isEmpty()) {
+            Optional<UserDetails> userDetails = jwtValidate(jwtToken.get());
+            if (!jwtValidate(jwtToken.get()).isEmpty()) {
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails.get(), null, userDetails.get().getAuthorities());
+                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            } else {
+                SecurityContextHolder.getContext().setAuthentication(null);
             }
         }
-        filterChain.doFilter(request, response);
+        try {
+            filterChain.doFilter(request, response);
+        } catch (ExpiredJwtException e) {
+            logger.error("Spring Security Filter Chain Exception:", e);
+        }
     }
 }
+
 
 

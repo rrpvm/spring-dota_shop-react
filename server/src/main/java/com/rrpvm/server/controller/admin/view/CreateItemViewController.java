@@ -4,20 +4,24 @@ import com.rrpvm.server.dto.request.ItemCreateDTO;
 import com.rrpvm.server.exception.admin.ItemAlreadyExistException;
 import com.rrpvm.server.exception.user.ResourcePathAlreadyExist;
 import com.rrpvm.server.model.entity.ItemSell;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.ResponseEntity;
 import com.rrpvm.server.dao.repository.ItemSellRepository;
+
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Null;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.concurrent.locks.ReentrantLock;
 
 @RestController
@@ -36,7 +40,7 @@ public class CreateItemViewController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> createItem(@RequestPart("file_image") MultipartFile itemImageData,
                                              @RequestPart("item_data") ItemCreateDTO itemToCreate)
-            throws NullPointerException, ItemAlreadyExistException, ResourcePathAlreadyExist, IOException, URISyntaxException {
+            throws NullPointerException, ItemAlreadyExistException, ResourcePathAlreadyExist, IOException {
         if (itemToCreate == null || itemToCreate == null) {
             throw new NullPointerException("data mismatch");//unchecked
         }
@@ -63,10 +67,7 @@ public class CreateItemViewController {
         // mutex.unlock();
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/test")
-    public void test(){
-        System.out.println("test");
-    }
+
     @ExceptionHandler(value = {NullPointerException.class})
     private ResponseEntity<String> nullpointerDataExceptionHandler(NullPointerException exception) {
         return ResponseEntity.badRequest().body(exception.getMessage());
@@ -76,6 +77,5 @@ public class CreateItemViewController {
     private ResponseEntity<Nullable> resolveImageNullpointer() {
         return ResponseEntity.badRequest().body(null);
     }
-
 
 }

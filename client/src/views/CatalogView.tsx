@@ -11,7 +11,7 @@ import MultiComboBoxItem from '../model/MultiComboBoxItem';
 import SortBarItem from '../model/SortBarItem';
 import { AxiosError, AxiosResponse } from 'axios';
 import LoadingComponent from '../components/singletons/LoadingComponent';
-import AlternativeLaodPage from './AlternativeLoadPage';
+import AlternativeLaodPage from './AlternativeLoadView';
 
 
 export const CatalogView = (): JSX.Element => {
@@ -44,6 +44,7 @@ export const CatalogView = (): JSX.Element => {
     const [fetchStatus, setFetchStatus] = useState<number>(-1);
     useEffect(() => {
         if (itemNameFilter.length === 0) updateNameFilterParams()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [itemNameFilter]);
     useEffect(() => {
         setFetchStatus(-1);
@@ -61,6 +62,7 @@ export const CatalogView = (): JSX.Element => {
                 navigate("/error_page/500");
             }
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     const onSearchFocused = () => setSearchFocused(true);
     const onSearchBlured = () => setSearchFocused(false);

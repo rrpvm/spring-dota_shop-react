@@ -6,20 +6,16 @@ import com.rrpvm.server.exception.common.InvalidAuthorizationDataException;
 import com.rrpvm.server.exception.common.UserAlreadyExistException;
 import com.rrpvm.server.model.entity.User;
 import com.rrpvm.server.service.JwtService;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.naming.AuthenticationException;
 
 
 @RestController
@@ -61,10 +57,14 @@ public class AuthorizationController {
         userRepository.save(user);
         return ResponseEntity.ok().body(jwtService.generateToken(registrationData));
     }
-
+    @GetMapping("/validate")
+    public boolean validateAuthorization(){
+        return SecurityContextHolder.getContext().getAuthentication() != null;
+    }
     @ExceptionHandler({org.springframework.security.core.AuthenticationException.class})
     private ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        System.out.println(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
     @ExceptionHandler({org.springframework.http.converter.HttpMessageNotReadableException.class})

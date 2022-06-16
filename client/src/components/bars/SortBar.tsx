@@ -7,6 +7,7 @@ export const SortBar: React.FC<ISortBarProp> = ({ items }) => {
     const [currentSortSelection, setSort] = useState<SortBarItem | undefined>();
     const onSortSelect = (item: SortBarItem) => { setSort(item); }
     useEffect(() => { if (currentSortSelection !== undefined) currentSortSelection.sortFunction() }, [currentSortSelection]);//
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { if (items.length > 0 && currentSortSelection === undefined) setSort(items[0]); }, []);
     return (
         <div className='sortbar-wrapper'>

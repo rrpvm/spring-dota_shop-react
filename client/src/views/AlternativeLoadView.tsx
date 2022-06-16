@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import '../styles/views/404.css'
@@ -13,6 +14,7 @@ const AlternativeLaodPage: React.FC = () => {
     useEffect(() => {
         if (canvas === null) return;
         if (canvas.current === null) return;
+        particles = [];
         context = canvas.current.getContext('2d');
 
     }, []);
