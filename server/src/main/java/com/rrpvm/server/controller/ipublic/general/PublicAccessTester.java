@@ -15,7 +15,7 @@ import java.util.Map;
 @RequestMapping("/public/v1/access")
 @CrossOrigin(origins = "http://localhost:3000")
 public class PublicAccessTester {
-    @GetMapping("hasAccess")
+    @GetMapping("/getAuthoritiesList")
     public Map<Object, Object> test(@AuthenticationPrincipal User user) {
         Map<Object, Object> response = new HashMap<>();
         if (user == null) {

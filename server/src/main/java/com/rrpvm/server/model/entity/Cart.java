@@ -1,5 +1,7 @@
 package com.rrpvm.server.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "cart_id")
     private Long id;
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = CartItem.class)
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = CartItem.class,cascade=CascadeType.ALL)
     @JoinTable(name = "carts_items",
             joinColumns = {
                     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id", nullable = false, unique = false)
@@ -33,6 +35,7 @@ public class Cart {
     private List<CartItem> items;
     @OneToOne(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(referencedColumnName = "user_id", name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Cart(List<CartItem> items, User user) {

@@ -10,6 +10,7 @@ import com.rrpvm.server.model.entity.CartItem;
 import com.rrpvm.server.model.entity.ItemSell;
 import com.rrpvm.server.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,7 +38,7 @@ public class UserCartController {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-    @GetMapping("/cart")
+    @GetMapping
     public ResponseEntity<Cart> getCart(@AuthenticationPrincipal User user)
             throws UserDataInvalidException, UserDoesNotExistException {
         if (user == null) {
@@ -50,7 +52,7 @@ public class UserCartController {
     }
 
     //return always only enabled
-    @GetMapping("/cart/item/list")
+    @GetMapping("/item/list")
     public ResponseEntity<List<CartItem>> getCartItems(@AuthenticationPrincipal User user)
             throws UserDataInvalidException, UserDoesNotExistException {
         if (user == null) {
@@ -68,7 +70,7 @@ public class UserCartController {
         );
     }
 
-    @GetMapping("/cart/item")
+    @GetMapping("/item")
     public ResponseEntity<CartItem> getCartItem(@AuthenticationPrincipal User user,
                                                 @RequestParam(name = "cart_item_id") Long cartItemId)
             throws UserDataInvalidException, UserDoesNotExistException {
@@ -79,15 +81,15 @@ public class UserCartController {
         if (dbUser == null) {
             throw new UserDoesNotExistException();
         }
-        CartItem result = cartItemRepository.findById(cartItemId).get();
-        if (result == null) {
-            ResponseEntity.noContent().build();
+        Optional<CartItem> result = cartItemRepository.findById(cartItemId);
+        if (result.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(result.get());
     }
 
-    @PutMapping("/cart_item")
-    public ResponseEntity<User> addItemToCard(@AuthenticationPrincipal User user, @RequestBody Long itemId)
+    @PutMapping("/item")
+    public ResponseEntity addItemToCard(@AuthenticationPrincipal User user, @RequestBody Long itemId)
             throws UserDoesNotExistException, UserDataInvalidException {
         if (user == null) {
             throw new UserDataInvalidException();
@@ -99,14 +101,20 @@ public class UserCartController {
         }
         Cart oldCart = dbUser.getCart();
         List<CartItem> oldItems = oldCart.getItems();
+        if (oldItems.stream().
+                filter(streamItem -> !streamItem.isDeleted() &&
+                        streamItem.getItem().getItemId() == itemId).count() > 0) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("item is already in cart");
+        }
+
         oldItems.add(new CartItem(item, new Date(), false, oldCart));
         oldCart.setItems(oldItems);
         dbUser.setCart(oldCart);
         userRepository.save(dbUser);
-        return ResponseEntity.ok(dbUser);
+        return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/cart_item")
+    @DeleteMapping("/item")
     public ResponseEntity deleteItemFromCart(@AuthenticationPrincipal User user, @RequestParam(name = "id", required = true) Long itemId)
             throws UserDoesNotExistException, UserDataInvalidException {
         if (user == null || itemId == null) {
@@ -119,7 +127,7 @@ public class UserCartController {
         Cart oldCart = dbUser.getCart();
         List<CartItem> oldItems = oldCart.getItems();
         oldItems.forEach(item_m -> {
-            if (item_m.getId() == itemId)
+            if (item_m.getItem().getItemId() == itemId)
                 item_m.setDeleted(true);
         });
         oldCart.setItems(oldItems);
@@ -128,7 +136,7 @@ public class UserCartController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/cart/clear")
+    @DeleteMapping("/clear")
     public ResponseEntity clearCart(@AuthenticationPrincipal User user)
             throws UserDataInvalidException, UserDoesNotExistException {
         if (user == null) {

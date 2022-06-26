@@ -1,5 +1,7 @@
 package com.rrpvm.server.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -30,6 +32,7 @@ public class CartItem {
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Cart.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id", referencedColumnName = "cart_id")
+    @JsonIgnore
     private Cart cart;
 
     public CartItem(ItemSell item, Date date, boolean deleted, Cart cart) {

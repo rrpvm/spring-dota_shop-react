@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 
 @RestController
-@RequestMapping("/public/v1/authorization")
+@RequestMapping("/public/v1/security")
 @CrossOrigin("http://localhost:3000")
 public class PublicAuthorizationController {
     @Autowired
@@ -34,7 +34,7 @@ public class PublicAuthorizationController {
     @Autowired
     private JwtService jwtService;
 
-    @PostMapping("/authorize")
+    @PostMapping("/authentication")
     public ResponseEntity<String> authorize(@RequestBody UserAuthorizationDTO authenticationRequest) throws
             org.springframework.security.core.AuthenticationException,
             org.springframework.http.converter.HttpMessageNotReadableException,
@@ -74,10 +74,6 @@ public class PublicAuthorizationController {
         }
     }
 
-    @GetMapping("/validate")
-    public boolean validateAuthorization() {
-        return SecurityContextHolder.getContext().getAuthentication() != null;
-    }
 
     @ExceptionHandler({org.springframework.security.core.AuthenticationException.class})
     private ResponseEntity<String> handleAuthenticationException(AuthenticationException e) {
